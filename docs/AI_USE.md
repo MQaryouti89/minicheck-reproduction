@@ -24,7 +24,7 @@
 
 ## Safeguards against AI error
 
-- **Numbers are recomputed by code, not typed.** `scripts/final_results.py` recomputes the key numbers from the per-claim prediction files and checks them against every saved table and README.md (31 checks, all pass).
+- **Numbers are recomputed by code, not typed.** `scripts/final_results.py` recomputes the key numbers from the per-claim prediction files and checks them against every saved table and README.md (32 checks, all pass).
 - **Thresholds were frozen before the test split was scored.** The frozen file's hash is checked by the analysis script and by the Kaggle notebook.
 - **References were checked against the ACL Anthology and publisher pages.** The BibTeX comes from the Anthology's own export.
 - **Problems are recorded rather than hidden** (PROGRESS.md):

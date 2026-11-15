@@ -27,6 +27,7 @@
 | frozen delta file unchanged (sha256 ce2102326bc8c686) | PASS |  |
 | phase5 per-dataset cascade BAcc = phase4/test_per_dataset.csv | PASS |  |
 | measured: end-to-end seconds recomputed from cascade/test/*.csv | PASS | 3380.1 s |
+| cascade: Δ vs Flan-T5 = −0.2052 (exact) and matches the bootstrap point difference | PASS | -0.2052 |
 | claim features: one row per test claim, same ids as the predictions | PASS |  |
 | claim features / examples: no claim or document text columns | PASS |  |
 | failure examples: ids, labels and datasets match the predictions | PASS |  |

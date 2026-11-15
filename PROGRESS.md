@@ -8,7 +8,7 @@ Last updated: 2026-11-15
 | 2. Kaggle preparation | **Done** |
 | 3. Reproduce the three models | **Done.** All three reproduce the paper on one Kaggle T4 (test averages within 0.03) |
 | 4. Adaptive cascade | **Done, reviewed and approved.** Pre-registered verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
-| 5. Error analysis, reproducibility, final preparation | **All technical work done.** Pending (student): report, presentation, GitHub push, submission |
+| 5. Error analysis, reproducibility, final preparation | **Technical work done; report drafted.** Pending (student): GitHub push, review of the report, presentation, submission |
 
 ## 25-step tracker
 
@@ -35,10 +35,10 @@ Last updated: 2026-11-15
 | 19 | 4 | Cascade error analysis | Done |
 | 20 | 4 | End-to-end Kaggle run (version 6) and measured vs simulated | Done |
 | 21 | 5 | Final error analysis (FP/FN, agreement, confident errors, datasets, length/cost, claim types, examples) | Done |
-| 22 | 5 | Final tables, figures and consistency check (31/31 PASS) | Done |
-| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README | Done; ready to publish. `git init` and push are for the student (checklist C) |
+| 22 | 5 | Final tables, figures and consistency check (32/32 PASS) | Done |
+| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Push to the private GitHub repository `MQaryouti89/minicheck-reproduction` pending (student) |
 | 24 | 5 | Literature: 16 verified references, relevance notes, five suggested papers | Done |
-| 25 | 5 | Submission checklist and AI-use statement; **report and presentation (student)** | Checklist done; report and slides to do |
+| 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report drafted (`../Report/AI504_Assignment2_MiniCheck_Report.docx`, not in the repository), awaiting the student's review; presentation not started |
 
 ## Phase 1: Review and verification
 
@@ -69,15 +69,16 @@ Last updated: 2026-11-15
   - pinned data downloaded, and dev/test claim counts match Table 11 (no warning)
   - each model loaded from its pinned revision, and the `score()` check passed
   - load time / GPU memory of the weights / peak GPU memory, by model:
-    - RoBERTa: 32.5 s / 1,356 MB / 1.5 GB
-    - DeBERTa: 14.3 s / 1,660 MB / 2.7 GB
-    - Flan-T5: 18.4 s / 2,990 MB / 3.9 GB
+    - RoBERTa: 32.5 s / 1,356 MiB / ~1.5 thousand MiB
+    - DeBERTa: 14.3 s / 1,660 MiB / ~2.7 thousand MiB
+    - Flan-T5: 18.4 s / 2,990 MiB / ~3.9 thousand MiB
+    - (smoke-test peaks were written as MiB ÷ 1,000 "GB"; see the unit correction in Phase 5)
   - estimated full dev + test time on T4 (from the smoke timings, rough): RoBERTa ~1.2 h, DeBERTa ~1.8 h, Flan-T5 ~2.4 h
 - [x] After the smoke test: silenced sklearn warnings on one-class smoke samples (metrics unchanged); `USE_TF=0` so TensorFlow is not imported during the timed model load
 
 ## Phase 3: Reproduce the three models (Kaggle T4)
 
-| Model | dev | test | Avg BAcc (test) | Paper row mean | Datasets matching | Runtime (dev + test) | ms/claim | Peak GPU MB |
+| Model | dev | test | Avg BAcc (test) | Paper row mean | Datasets matching | Runtime (dev + test) | ms/claim | Peak GPU MiB |
 |---|---|---|---|---|---|---|---|---|
 | RoBERTa-Large | ✓ 71.78 | ✓ 73.14 | **73.14** | 73.12 | 9/10 (ClaimVerify +0.18) | 88 min (2,926 s + 2,361 s) | 194 / 182 | 1,733 |
 | DeBERTa-v3-Large | ✓ 70.99 | ✓ 72.56 | **72.56** | 72.53 | 9/10 (AggreFact-CNN +0.12) | 140 min (4,614 s + 3,762 s) | 306 / 290 | 14,704 |
@@ -90,7 +91,7 @@ Last updated: 2026-11-15
   - The T4 is 2.3× slower than the laptop GPU on test (2,361 s vs 1,041 s). Time per claim follows the number of chunks: ~39 ms with 1 chunk (Reveal, FactCheck-GPT), ~500 ms with 5–6 (Wice, ClaimVerify).
   - Local re-run of `metrics.py` on the downloaded files gives the same numbers as Kaggle's.
 - [x] Kaggle version 2: DeBERTa + Flan-T5. **Failed: CUDA out of memory** on DeBERTa dev Wice after 4 of 10 dev datasets and 200 Wice claims.
-  - Cause: one sentence-split chunk of up to 2,048 tokens × 16 chunks per batch; DeBERTa's attention needed 4 GB more than the T4's 15 GB. The authors used a 48 GB A6000.
+  - Cause: one sentence-split chunk of up to 2,048 tokens × 16 chunks per batch; DeBERTa's attention needed 4 GiB more than the T4's 15 GiB. The authors used a 48 GB A6000.
   - Fix (`run_checker.py`): on OOM, retry only that claim with 8/4/2/1 chunks per batch, and record it (`batch_fallbacks`).
   - Tested with tiny random-weight models of all three types (local RAM was too low for the real checkpoints): batch size changes the probability by 0 (RoBERTa, DeBERTa) and at most 1.4e-6 (Flan-T5). The simulated-OOM retry survives an interruption and resume.
   - Also fixed: the start-up `score()` check now uses the 3 shortest documents, so it cannot run out of memory itself.
@@ -99,7 +100,7 @@ Last updated: 2026-11-15
   - Code hashes match the upload (`run_checker.py` `412f0d4c59ed1b95`). Same environment as version 1 for every model and dataset: Python 3.13.16, torch 2.11.0+cu130, transformers 4.57.6, tokenizers 0.22.2, MiniCheck `b58b9fa`, Tesla T4.
   - All 6 model/split runs complete: 10/10 datasets, counts match Table 11, `idx` unique.
   - OOM fallback used for 5 of 84,087 scored claims, each once, at 8 chunks per batch: DeBERTa dev-04961 (Wice), test-07944 (ExpertQA); Flan-T5 test-05014, test-05016, test-05699 (ClaimVerify). None is in a dataset that differs from the paper.
-  - Peak GPU memory reached 14.7 GB (DeBERTa) of the T4's 15 GB, so the fallback was needed.
+  - Peak GPU memory reached 14,704 MiB = 14.4 GiB (DeBERTa) of the T4's 15 GiB, so the fallback was needed.
 - [x] Local re-run of `metrics.py` gives the same numbers as Kaggle's
 - [x] Final comparison with Table 2 for all three models (`metrics/comparison_test.md`):
   - test average vs paper row mean: RoBERTa +0.02, DeBERTa +0.03, Flan-T5 +0.01
@@ -179,8 +180,8 @@ Question: can RoBERTa first, with only uncertain claims sent to Flan-T5, (1) bea
   - **speed-up vs Flan-T5: 1.47× measured**, 1.57× simulated
   - the gap is session variation: the RoBERTa stage was 9% slower than in Phase 3, the Flan-T5 stage 1% slower; the decision overhead is 0.45 s in total
 - [x] Memory:
-  - weights of both models: 4.35 GB
-  - peak allocated: 13.6 GB (ClaimVerify)
+  - weights of both models: 4,352 MiB = 4.25 GiB
+  - peak allocated: 13,617 MiB = 13.3 GiB (ClaimVerify)
   - **no OOM fallbacks**, against the plan's expectation
   - model loading: 29 s
 - [x] Verdict unchanged: **negative**. The speed criterion is met (1.47× ≥ 1.25×), but non-inferiority is not shown.
@@ -224,7 +225,7 @@ Also done in Phase 4:
 
 **Step 22: final results.** `scripts/final_results.py` → `results/final/`:
 - [x] Tables T1–T9 and figures 1–10.
-- [x] 31 consistency checks recompute the numbers from the per-claim predictions and compare them with every saved table and README.md: **all PASS**.
+- [x] 32 consistency checks recompute the numbers from the per-claim predictions and compare them with every saved table and README.md: **all PASS**.
 - [x] A SHA-256 manifest of all result files.
 
 **Step 23: repository.**
@@ -235,9 +236,11 @@ Also done in Phase 4:
 - [x] Secrets scan: no tokens. Text scan: no claim or document text in the results.
 - [x] README rewritten for an outside reader: results at a glance, Phase 5, provenance, full reproduction order, data and privacy, citation (MiniCheck Apache-2.0, not copied). `requirements-analysis.txt` pins the CPU environment.
 - [x] 19 tests pass (`python -m pytest tests -q`).
+- [x] **Correction (2026-11-15, found while checking the report):** the runners record GPU memory in MiB (2^20 bytes), but README/PROGRESS had shown MiB ÷ 1,000 as "GB". Now reported in GiB: cascade peak 13,617 MiB = **13.3 GiB** (was "13.6 GB"), weights 4,352 MiB = 4.25 GiB (was "4.35 GB"), Phase 3 peaks 1.7 / 14.4 / 14.0 GiB (was 1.7 / 14.7 / 14.4). No measurement changed; the T4 limit is 15,360 MiB = 15 GiB, so all proportions are unchanged.
+- [x] Final tables now keep 4 decimals, so later 2-decimal rounding cannot differ from the exact value (the cascade difference is −0.2052, shown as −0.21; a 3-decimal copy (−0.205) would round to −0.20).
 - [x] Removed the short example-text fragments that had been quoted in README.md and the checklist. No dataset text remains outside `private/` (checked by search).
 - [x] `.gitattributes` keeps result files byte-exact, and the manifest is written with LF endings.
-- [x] Git dry run on a copy: 290 files staged; `private/` and `.lnk` ignored; no sensitive paths. On a fresh checkout with `core.autocrlf=true`, all 242 result files match the manifest, 19/19 tests pass and 31/31 checks pass.
+- [x] Git dry run on a copy: 290 files staged; `private/` and `.lnk` ignored; no sensitive paths. On a fresh checkout with `core.autocrlf=true`, all 242 result files match the manifest, 19/19 tests pass and 32/32 checks pass.
 - [ ] Student: `git init`, create the GitHub repository and push, then check online that `private/` is absent (`docs/SUBMISSION_CHECKLIST.md` C).
 
 **Step 24: literature.**

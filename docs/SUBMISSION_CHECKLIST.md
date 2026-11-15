@@ -24,12 +24,12 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
 | Criterion (weight) | 75 (Very good) | 100 (Outstanding) | Our evidence |
 |---|---|---|---|
 | Interpretation (20%) | Correct research and design methodologies | Excellent demonstration of research and design methodologies | Pre-registered plan (`configs/phase4.json`), dev/test separation, frozen δ with hash, controls, paired bootstrap, measured vs simulated |
-| Project code (30%) | Anyone can use the repository to easily reproduce the results | Anyone can easily reproduce everything; well-annotated code, README files and scripts to aid reproduction, comments on best practices and findings | Pinned versions, one Kaggle notebook, resumable runners, 19 unit tests, 31-check consistency checker, README run instructions |
+| Project code (30%) | Anyone can use the repository to easily reproduce the results | Anyone can easily reproduce everything; well-annotated code, README files and scripts to aid reproduction, comments on best practices and findings | Pinned versions, one Kaggle notebook, resumable runners, 19 unit tests, 32-check consistency checker, README run instructions |
 | Report (50%) | Good literature review; **at least one original contribution** to reproduce the work and/or go beyond the original results, **or error analysis**; well structured; results close to published | Very good literature discussion; goes above and beyond in analysis; effective tables and figures; results very good | Reproduction within 0.03 of the paper; 72.7 discrepancy found; cascade study with an honest negative result; error analysis; 16 verified references |
 
 ## C. GitHub repository (do before submitting)
 
-1. [ ] Create an empty **public** (or instructor-accessible) repository on GitHub.
+1. [ ] Create an empty repository on GitHub. The student chose **private** (`MQaryouti89/minicheck-reproduction`): before submitting, add the instructor as a collaborator (Settings → Collaborators) or make it public, otherwise the link in the report will not open for the marker.
 2. [ ] In the project folder:
    ```bash
    git init
@@ -71,7 +71,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
   - The measured speed-up is 1.47×.
   - The cascade beats RoBERTa (+1.37) and random deferral (+1.12).
   - Measured predictions are identical to the simulation.
-  - Peak memory was 13.6 GB on the T4, with no OOM.
+  - Peak memory was 13.3 GiB (13,617 MiB) of the T4's 15 GiB, with no OOM.
 - [ ] **Why the criteria were not met.**
   - The CI of (cascade − Flan-T5) is [−1.22, +0.82]: too wide to show non-inferiority at −0.5.
   - The margin was smaller than the precision the test set allows (Card et al., 2020).

@@ -13,7 +13,7 @@ This repository has two goals:
 | Reproduction (test, 12,949 claims, Kaggle T4) | RoBERTa **73.14**, DeBERTa **72.56**, Flan-T5 **74.71**; paper row means 73.12 / 72.53 / 74.70. 26 of 30 dataset scores equal the paper after rounding; the other 4 differ by 1–2 predictions |
 | Issue found in the paper | Table 2 prints 72.7 as RoBERTa's average, but its own row averages 73.12 (all other rows check out) |
 | Cascade (δ 0.19, frozen on dev) | 74.51 vs Flan-T5 74.71: **−0.21 [−1.22, +0.82]**; 13.6% of claims sent to Flan-T5 |
-| Measured on the T4 | **1.47× faster** than Flan-T5 (3,380 s vs 4,954 s); 12,949 / 12,949 predictions identical to the simulation; peak GPU 13.6 GB; no OOM |
+| Measured on the T4 | **1.47× faster** than Flan-T5 (3,380 s vs 4,954 s); 12,949 / 12,949 predictions identical to the simulation; peak GPU memory 13.3 GiB; no OOM |
 | Pre-registered verdict | **Negative.** The speed target was met, but non-inferiority (−0.5 margin) was not shown. Better than RoBERTa (+1.37) and than random deferral (+1.12) |
 | Main error-analysis findings | 78% of RoBERTa's errors are confident, so a confidence gate cannot reach them. Complex claims are where RoBERTa is weak and Flan-T5 helps (+3.1 vs +0.3 points within datasets) |
 
@@ -33,9 +33,9 @@ Progress across all project phases: [PROGRESS.md](PROGRESS.md).
 
 | Checker | Test BAcc (ours) | Paper: mean of Table 2 row (printed Avg) | Datasets matching | Dev BAcc | Test ms/claim | Peak GPU memory |
 |---|---|---|---|---|---|---|
-| MiniCheck-RoBERTa-Large | **73.14** | 73.12 (72.7) | 9/10 | 71.78 | 182 | 1.7 GB |
-| MiniCheck-DeBERTa-v3-Large | **72.56** | 72.53 (72.6) | 9/10 | 70.99 | 290 | 14.7 GB |
-| MiniCheck-Flan-T5-Large | **74.71** | 74.70 (74.7) | 8/10 | 72.38 | 383 | 14.4 GB |
+| MiniCheck-RoBERTa-Large | **73.14** | 73.12 (72.7) | 9/10 | 71.78 | 182 | 1.7 GiB |
+| MiniCheck-DeBERTa-v3-Large | **72.56** | 72.53 (72.6) | 9/10 | 70.99 | 290 | 14.4 GiB |
+| MiniCheck-Flan-T5-Large | **74.71** | 74.70 (74.7) | 8/10 | 72.38 | 383 | 14.0 GiB |
 
 "Matching" means equal to the paper after rounding to one decimal.
 - Dev and test splits each have 15,080 and 12,949 claims.
@@ -162,8 +162,8 @@ The frozen cascade (δ 0.19) was run once on the 12,949 test claims (Kaggle note
 | RoBERTa stage vs Phase 3, same claims | – | 1.09× slower |
 | Flan-T5 stage vs Phase 3, same deferred claims | – | 1.01× |
 | Decision overhead (end to end − stage sum) | – | 0.45 s in total |
-| GPU memory of both models' weights | – | 4.35 GB (RoBERTa 1.36 + Flan-T5 2.99) |
-| Peak GPU memory allocated | – | **13.6 GB** (ClaimVerify) of 15 GB |
+| GPU memory of both models' weights | – | 4.25 GiB (RoBERTa 1.32 + Flan-T5 2.92) |
+| Peak GPU memory allocated | – | **13.3 GiB** (13,617 MiB, ClaimVerify) of the T4's 15 GiB |
 | Out-of-memory fallbacks | – | 0 |
 | Model loading (one-off, not in the times above) | – | 29 s |
 
@@ -261,7 +261,7 @@ All three checkpoints are stored and run in fp32 (about 6.3 GB in total). Evalua
 - supported if that score > 0.5
 - BAcc per dataset, averaged without weights
 
-**One deviation, for GPU memory.** MiniCheck splits documents at sentence boundaries, so one very long "sentence" (for example a scraped web page without punctuation) becomes a single chunk of up to 2,048 tokens. For DeBERTa and Flan-T5, 16 such chunks need more than the T4's 15 GB; the authors used a 48 GB A6000. If a claim runs out of memory, `run_checker.py` scores that claim's chunks in batches of 8 (then 4, 2, 1). Every other claim keeps 16.
+**One deviation, for GPU memory.** MiniCheck splits documents at sentence boundaries, so one very long "sentence" (for example a scraped web page without punctuation) becomes a single chunk of up to 2,048 tokens. For DeBERTa and Flan-T5, 16 such chunks need more than the T4's 15 GiB; the authors used a 48 GB A6000. If a claim runs out of memory, `run_checker.py` scores that claim's chunks in batches of 8 (then 4, 2, 1). Every other claim keeps 16.
 
 Each chunk is still scored separately, so only padding differs. A test with all three model types, on chunks of up to 1,807 tokens, gave the same probability at batch sizes 16, 8, 2 and 1: no difference for RoBERTa and DeBERTa, at most 1.4e-6 for Flan-T5. The affected claims are listed in each dataset's `.json` (`batch_fallbacks`) and counted in `metrics/summary.csv`. In the final runs this happened for 5 of 84,087 claims, each needing only one step down, to 8 chunks per batch:
 - DeBERTa: one Wice dev claim and one ExpertQA test claim
@@ -294,7 +294,7 @@ scripts/
   run_cascade.py                 Kaggle runner for the end-to-end cascade (reuses run_checker.py's loading)
   build_notebook.py              generates notebooks/minicheck_kaggle.ipynb
   error_analysis.py              CPU only: Phase 5 error analysis (+ claim types/examples with --with-text)
-  final_results.py               CPU only: final tables T1-T9, figures 1-10, 31 consistency checks, file manifest
+  final_results.py               CPU only: final tables T1-T9, figures 1-10, 32 consistency checks, file manifest
 tests/
   test_phase4.py                 6 tests: cascade rule, BAcc, paired bootstrap, freezing, measured vs simulated
   test_error_analysis.py         13 tests: claim-type rules, within-dataset and short-document checks, no gated text in outputs, id/label matching
@@ -327,6 +327,8 @@ metrics/comparison_test.md        test BAcc vs Table 2 for all models
 metrics/hardware_check.json       laptop vs T4 RoBERTa predictions
 logs/, code_version.json, pip_freeze_*.txt
 ```
+
+**Units.** GPU memory fields named `*_mb` in the result files are MiB (2^20 bytes); this README reports them in GiB. The T4 has 15,360 MiB (15 GiB) usable.
 
 `idx` is `<split>-<row number in the pinned parquet file>`, for example `test-00042`. It is identical across models and runs, so predictions can be joined on it. Prediction files hold no document or claim text, because the dataset is gated.
 

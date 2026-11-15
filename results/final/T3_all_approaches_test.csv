@@ -1,10 +1,10 @@
 approach,cost,bacc,bacc_ci_low,bacc_ci_high,d_bacc_vs_flan,d_vs_flan_ci_low,d_vs_flan_ci_high,deferred_pct,ms_per_claim,total_seconds,speedup_vs_flan
-RoBERTa alone,measured (Phase 3),73.14,71.98,74.302,-1.572,-2.798,-0.339,,182.322,2360.888,2.098
-DeBERTa alone,measured (Phase 3),72.561,71.391,73.744,-2.152,-3.347,-0.955,,290.488,3761.529,1.317
-Flan-T5 alone,measured (Phase 3),74.713,73.541,75.948,0.0,,,,382.564,4953.821,1.0
-Majority vote (3 models),sum of measured,75.229,74.059,76.403,0.517,-0.391,1.418,,855.374,11076.238,0.447
-"Cascade, primary (delta 0.19)",simulated,74.507,73.356,75.699,-0.205,-1.216,0.82,13.638,243.361,3151.288,1.572
-"Cascade, primary (delta 0.19), end to end",measured (Kaggle run),74.507,73.356,75.699,-0.205,-1.216,0.82,13.638,261.031,3380.087,1.466
-"Cascade, secondary (delta 0.41)",simulated,74.668,73.497,75.874,-0.044,-0.683,0.59,38.791,351.407,4550.365,1.089
-"Random deferral (same count per dataset, mean of draws)",simulated,73.389,72.318,74.478,-1.323,-2.365,-0.27,13.638,236.766,3065.889,1.616
-Oracle deferral (reference),simulated,83.185,82.156,84.267,8.473,7.715,9.285,10.086,224.497,2907.011,1.704
+RoBERTa alone,measured (Phase 3),73.14,71.98,74.302,-1.5725,-2.798,-0.339,,182.322,2360.888,2.098
+DeBERTa alone,measured (Phase 3),72.561,71.391,73.744,-2.1515,-3.347,-0.955,,290.488,3761.529,1.317
+Flan-T5 alone,measured (Phase 3),74.7125,73.541,75.948,0.0,,,,382.564,4953.821,1.0
+Majority vote (3 models),sum of measured,75.229,74.059,76.403,0.5165,-0.391,1.418,,855.374,11076.238,0.447
+"Cascade, primary (delta 0.19)",simulated,74.5074,73.356,75.699,-0.2052,-1.216,0.82,13.638,243.361,3151.288,1.572
+"Cascade, primary (delta 0.19), end to end",measured (Kaggle run),74.5074,73.356,75.699,-0.2052,-1.216,0.82,13.6381,261.0307,3380.087,1.4656
+"Cascade, secondary (delta 0.41)",simulated,74.668,73.497,75.874,-0.0445,-0.683,0.59,38.791,351.407,4550.365,1.089
+"Random deferral (same count per dataset, mean of draws)",simulated,73.389,72.318,74.478,-1.3235,-2.365,-0.27,13.638,236.766,3065.889,1.616
+Oracle deferral (reference),simulated,83.185,82.156,84.267,8.4725,7.715,9.285,10.086,224.497,2907.011,1.704

@@ -124,8 +124,8 @@ def main():
                      "paper (row mean / printed)": f"{ts.paper_row_mean:.2f} / {ts.paper_printed_average}",
                      "datasets matching paper": ts.datasets_matching_paper, "test macro F1": ts.macro_f1_mean,
                      "ms/claim (test)": ts.ms_per_claim, "dev + test time (min)": (dv.inference_seconds + ts.inference_seconds) / 60,
-                     "load (s)": ts.load_seconds, "weights GPU (MB)": ts.weights_gpu_mb,
-                     "peak GPU (MB)": max(dv.peak_gpu_mb_allocated, ts.peak_gpu_mb_allocated),
+                     "load (s)": ts.load_seconds, "weights GPU (MiB)": ts.weights_gpu_mb,
+                     "peak GPU (MiB)": max(dv.peak_gpu_mb_allocated, ts.peak_gpu_mb_allocated),
                      "OOM fallback claims": int(dv.batch_fallbacks + ts.batch_fallbacks)})
     tables["T2_baselines_dev_test_cost"] = pd.DataFrame(rows)
 
@@ -143,6 +143,16 @@ def main():
             "speedup_vs_flan": meas["speedup_vs_flan_measured"]}
     pos = int(np.flatnonzero(t3.approach.str.startswith("Cascade, primary"))[0]) + 1
     t3 = pd.concat([t3.iloc[:pos], pd.DataFrame([mrow]), t3.iloc[pos:]], ignore_index=True)
+    # Δ vs Flan-T5 = BAcc - Flan-T5 BAcc, from the unrounded cascade BAcc where available; the Phase 4 CSV keeps only
+    # 3 decimals, and rounding its -0.205 again would give -0.20 instead of the exact -0.2052 -> -0.21
+    flan_exact = macro_bacc(D, D.pred_F.values)[0]
+    t3.loc[t3.approach.str.startswith("Cascade, primary"), "bacc"] = b_c
+    t3["d_bacc_vs_flan"] = t3.bacc - flan_exact
+    t3.loc[t3.approach == "Flan-T5 alone", ["bacc", "d_bacc_vs_flan"]] = [flan_exact, 0.0]
+    check("cascade: Δ vs Flan-T5 = −0.2052 (exact) and matches the bootstrap point difference",
+          abs(b_c - flan_exact - stats["comparisons"][next(k for k in stats["comparisons"] if k.startswith("Cascade, primary")
+                                                             and k.endswith("Flan-T5 alone"))]["diff"]) < 1e-3,
+          f"{b_c - flan_exact:.4f}")
     tables["T3_all_approaches_test"] = t3
     tables["T4_paired_bootstrap"] = pd.DataFrame(
         [{"comparison": k, "difference": v["diff"], "CI low": v["ci95"][0], "CI high": v["ci95"][1],
@@ -160,8 +170,8 @@ def main():
         {"quantity": "speed-up vs Flan-T5 alone", "simulated": f"{meas['speedup_vs_flan_simulated']:.2f}x", "measured": f"{meas['speedup_vs_flan_measured']:.2f}x"},
         {"quantity": "RoBERTa stage time vs Phase 3", "simulated": "1.00", "measured": f"{meas['roberta_stage_time_vs_phase3']:.2f}"},
         {"quantity": "Flan-T5 stage time vs Phase 3 (same claims)", "simulated": "1.00", "measured": f"{meas['flan_stage_time_vs_phase3_same_claims']:.2f}"},
-        {"quantity": "GPU memory of both models' weights (MB)", "simulated": "-", "measured": f"{meas['weights_gpu_mb_both_models']:,.0f}"},
-        {"quantity": "peak GPU memory allocated (MB)", "simulated": "-", "measured": f"{meas['peak_gpu_mb_allocated']:,.0f}"},
+        {"quantity": "GPU memory of both models' weights (MiB)", "simulated": "-", "measured": f"{meas['weights_gpu_mb_both_models']:,.0f}"},
+        {"quantity": "peak GPU memory allocated (MiB)", "simulated": "-", "measured": f"{meas['peak_gpu_mb_allocated']:,.0f}"},
         {"quantity": "out-of-memory fallbacks", "simulated": "-", "measured": str(meas["batch_fallbacks_roberta"] + meas["batch_fallbacks_flan"])},
     ])
     tables["T6_precision_recall_f1_test"] = t4[["approach", "precision_supported", "recall_supported", "f1_supported",
@@ -233,7 +243,7 @@ def main():
         fig.tight_layout(); fig.savefig(OUT / "fig10_claim_types.png", facecolor=COL["surface"]); plt.close(fig)
 
     for k, v in tables.items():
-        v.round(3).to_csv(OUT / f"{k}.csv", index=False)
+        v.round(4).to_csv(OUT / f"{k}.csv", index=False)
 
     # ---- figures
     # F1: our BAcc minus the paper, per dataset
@@ -336,7 +346,7 @@ def main():
 
     # ---- README consistency
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    must = ["73.14", "72.56", "74.71", "74.51", "−0.21 [−1.22, +0.82]", "1.47×", "3,380", "13.6 GB", "13.6",
+    must = ["73.14", "72.56", "74.71", "74.51", "−0.21 [−1.22, +0.82]", "1.47×", "3,380", "13.3 GiB", "13.6",
             "+1.12 [+0.50, +1.75]", "+1.37 [+0.67, +2.10]", "0.19", "0.41", "12,949 / 12,949"]
     missing = [s for s in must if s not in readme]
     check("README.md contains the key final numbers", not missing, f"missing: {missing}" if missing else "")

@@ -1,4 +1,4 @@
-model,dev BAcc,test BAcc,paper (row mean / printed),datasets matching paper,test macro F1,ms/claim (test),dev + test time (min),load (s),weights GPU (MB),peak GPU (MB),OOM fallback claims
-roberta-large,71.778,73.14,73.12 / 72.7,9/10,70.013,182.323,88.112,17.6,1355.6,1732.9,0
+model,dev BAcc,test BAcc,paper (row mean / printed),datasets matching paper,test macro F1,ms/claim (test),dev + test time (min),load (s),weights GPU (MiB),peak GPU (MiB),OOM fallback claims
+roberta-large,71.778,73.14,73.12 / 72.7,9/10,70.013,182.323,88.1123,17.6,1355.6,1732.9,0
 deberta-v3-large,70.99,72.561,72.53 / 72.6,9/10,68.653,290.488,139.587,18.4,1659.6,14704.3,2
-flan-t5-large,72.378,74.713,74.70 / 74.7,8/10,72.62,382.564,183.622,15.3,2987.5,14356.2,3
+flan-t5-large,72.378,74.713,74.70 / 74.7,8/10,72.62,382.564,183.6225,15.3,2987.5,14356.2,3
