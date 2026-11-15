@@ -1,0 +1,13 @@
+category,idx,dataset,label,p_RoBERTa,p_DeBERTa,p_Flan-T5,deferred,numeric,negation,complex
+"A. Confident RoBERTa error, kept (not deferred); Flan-T5 would be right",test-03967,Reveal,0,0.973,0.961,0.028,False,False,False,False
+"A. Confident RoBERTa error, kept (not deferred); Flan-T5 would be right",test-06576,FactCheck-GPT,1,0.025,0.02,0.618,False,False,False,True
+"B. Deferred and broken: RoBERTa right, Flan-T5 wrong",test-04444,Reveal,0,0.469,0.059,0.573,True,False,False,False
+"B. Deferred and broken: RoBERTa right, Flan-T5 wrong",test-06018,FactCheck-GPT,0,0.497,0.042,0.775,True,False,False,False
+C. All models wrong with high confidence,test-07464,ExpertQA,1,0.014,0.017,0.023,False,False,False,True
+C. All models wrong with high confidence,test-04093,Reveal,0,0.989,0.972,0.966,False,False,False,False
+"D. Numeric claim, cascade wrong",test-07956,ExpertQA,1,0.01,0.013,0.28,False,True,False,True
+"D. Numeric claim, cascade wrong",test-07294,FactCheck-GPT,0,0.535,0.912,0.945,True,True,False,False
+"E. Negated claim, cascade wrong",test-03988,Reveal,0,0.328,0.925,0.924,True,False,True,False
+"E. Negated claim, cascade wrong",test-06291,FactCheck-GPT,1,0.036,0.058,0.042,False,False,True,False
+"F. Complex claim, cascade wrong",test-07628,ExpertQA,1,0.082,0.033,0.145,False,False,False,True
+"F. Complex claim, cascade wrong",test-05102,ClaimVerify,1,0.004,0.013,0.027,False,False,False,True

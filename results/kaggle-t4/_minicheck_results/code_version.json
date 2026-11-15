@@ -1,0 +1,11 @@
+{
+  "source": "/kaggle/input/datasets/mohammadalqaryoutii/minicheck-code/MiniCheck_Reproduction",
+  "sha256_16": {
+    "scripts/metrics.py": "03eef3b359454519",
+    "scripts/minicheck_eval.py": "bfbc6ba7febcf8e8",
+    "scripts/minicheck_toy.py": "82cc13671838062a",
+    "scripts/run_checker.py": "326d9892ad0e3bde",
+    "configs/experiment.json": "d4c2e65fe4099a32",
+    "requirements-kaggle.txt": "6b9d62f333c5b6d0"
+  }
+}

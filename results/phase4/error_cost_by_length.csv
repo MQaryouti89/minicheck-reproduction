@@ -1,0 +1,5 @@
+document length (RoBERTa chunks),n,deferred_pct,cascade_s,flan_s,share_of_claims_pct,share_of_cascade_time_pct
+1 chunk,7779,12.868,517.037,735.322,60.074,16.407
+2-3,3726,14.868,1077.459,1574.227,28.774,34.191
+4-7,983,13.123,579.515,932.294,7.591,18.39
+8+,461,17.787,977.276,1711.978,3.56,31.012

@@ -1,0 +1,29 @@
+{
+  "frozen_at": "2026-11-15T05:51:21+00:00",
+  "selected_on": "dev",
+  "rule_primary": "the smallest delta (lowest simulated dev cost) whose dev macro BAcc >= Flan-T5's dev macro BAcc",
+  "rule_secondary": "the delta with the highest dev macro BAcc (ties: smaller delta); reported, but not the headline result",
+  "flan_dev_bacc": 72.3777,
+  "roberta_dev_bacc": 71.7776,
+  "primary": {
+    "delta": 0.19,
+    "dev_bacc": 72.3957,
+    "dev_deferred_pct": 14.28,
+    "dev_ms_per_claim": 256.8,
+    "dev_time_vs_flan": 0.6387,
+    "reached_flan_on_dev": true
+  },
+  "secondary": {
+    "delta": 0.41,
+    "dev_bacc": 73.4013,
+    "dev_deferred_pct": 38.93,
+    "dev_ms_per_claim": 362.3,
+    "dev_time_vs_flan": 0.9011
+  },
+  "phase4_config_sha256_16": "909c2e6e27856f5f",
+  "dev_inputs_sha256_16": {
+    "roberta-large": "a762879e3023f52c",
+    "deberta-v3-large": "16dcc32fae7ad049",
+    "flan-t5-large": "ecb8258ac77d2fa2"
+  }
+}

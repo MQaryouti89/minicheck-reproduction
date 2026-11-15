@@ -1,0 +1,29 @@
+# Gated LLM-AggreFact text (failure examples with claims/documents) and raw data: never commit
+private/
+*.parquet
+
+# Model checkpoints and caches
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+models/
+minicheck_models/
+
+# Python / notebook / test caches and local environments
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+venv/
+
+# Credentials (the HF token lives only in Kaggle Secrets or the local Hugging Face login)
+.env
+*token*
+
+# OS files
+*.lnk
+Thumbs.db
+desktop.ini
+.DS_Store

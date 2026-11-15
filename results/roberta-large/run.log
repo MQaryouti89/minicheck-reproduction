@@ -1,0 +1,21 @@
+=== roberta-large 23:22:12
+12949 claims, 10 datasets
+        dataset    n  bacc  paper  diff
+  AggreFact-CNN  558  63.7   63.7   0.0
+ AggreFact-XSum  558  70.8   70.8  -0.0
+TofuEval-MediaS  726  71.9   71.9   0.0
+ TofuEval-MeetB  772  75.9   75.9   0.0
+           Wice  358  67.6   67.6  -0.0
+         Reveal 1710  88.8   88.8   0.0
+    ClaimVerify 1088  77.6   77.4   0.2
+  FactCheck-GPT 1566  73.3   73.3  -0.0
+       ExpertQA 3702  57.4   57.4   0.0
+           Lfqa 1911  84.4   84.4  -0.0
+{
+  "model": "roberta-large",
+  "n_claims": 12949,
+  "load_seconds": 75.6,
+  "predict_seconds": 1041.1,
+  "average_all": 73.14,
+  "paper_average": 73.12
+}

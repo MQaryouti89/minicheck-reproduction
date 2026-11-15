@@ -1,0 +1,80 @@
+{
+  "model": "roberta-large",
+  "n_claims": 12949,
+  "load_seconds": 75.6,
+  "predict_seconds": 1041.1,
+  "per_dataset": [
+    {
+      "dataset": "AggreFact-CNN",
+      "n": 558,
+      "bacc": 63.75,
+      "paper": 63.7,
+      "diff": 0.05
+    },
+    {
+      "dataset": "AggreFact-XSum",
+      "n": 558,
+      "bacc": 70.76,
+      "paper": 70.8,
+      "diff": -0.04
+    },
+    {
+      "dataset": "TofuEval-MediaS",
+      "n": 726,
+      "bacc": 71.93,
+      "paper": 71.9,
+      "diff": 0.03
+    },
+    {
+      "dataset": "TofuEval-MeetB",
+      "n": 772,
+      "bacc": 75.94,
+      "paper": 75.9,
+      "diff": 0.04
+    },
+    {
+      "dataset": "Wice",
+      "n": 358,
+      "bacc": 67.57,
+      "paper": 67.6,
+      "diff": -0.03
+    },
+    {
+      "dataset": "Reveal",
+      "n": 1710,
+      "bacc": 88.81,
+      "paper": 88.8,
+      "diff": 0.01
+    },
+    {
+      "dataset": "ClaimVerify",
+      "n": 1088,
+      "bacc": 77.58,
+      "paper": 77.4,
+      "diff": 0.18
+    },
+    {
+      "dataset": "FactCheck-GPT",
+      "n": 1566,
+      "bacc": 73.28,
+      "paper": 73.3,
+      "diff": -0.02
+    },
+    {
+      "dataset": "ExpertQA",
+      "n": 3702,
+      "bacc": 57.43,
+      "paper": 57.4,
+      "diff": 0.03
+    },
+    {
+      "dataset": "Lfqa",
+      "n": 1911,
+      "bacc": 84.36,
+      "paper": 84.4,
+      "diff": -0.04
+    }
+  ],
+  "average_all": 73.14,
+  "paper_average": 73.12
+}

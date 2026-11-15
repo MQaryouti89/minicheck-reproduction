@@ -1,0 +1,12 @@
+quantity,simulated,measured
+predictions equal to simulation,-,"12,949 / 12,949"
+test macro BAcc,74.51,74.51
+% sent to Flan-T5,13.6,13.6
+total inference time (s),"3,151","3,380"
+ms per claim,243,261
+speed-up vs Flan-T5 alone,1.57x,1.47x
+RoBERTa stage time vs Phase 3,1.00,1.09
+Flan-T5 stage time vs Phase 3 (same claims),1.00,1.01
+GPU memory of both models' weights (MB),-,"4,352"
+peak GPU memory allocated (MB),-,"13,617"
+out-of-memory fallbacks,-,0

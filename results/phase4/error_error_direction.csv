@@ -1,0 +1,8 @@
+approach,missed_errors_FP,false_alarms_FN
+RoBERTa alone,863,2923
+DeBERTa alone,921,2958
+Flan-T5 alone,1192,2161
+Majority vote (3 models),906,2602
+"Cascade, primary (delta 0.19)",925,2650
+"Cascade, secondary (delta 0.41)",1055,2305
+Oracle deferral (reference),656,1824

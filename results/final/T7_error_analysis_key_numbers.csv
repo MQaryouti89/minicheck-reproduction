@@ -1,0 +1,9 @@
+finding,value
+RoBERTa errors (test),"3,786"
+... of which kept by the gate (|p-0.5| >= delta),"2,959 (78.2%)"
+RoBERTa errors that Flan-T5 gets right,"1,306; deferred: 474 (36.3%)"
+claims where both RoBERTa and Flan-T5 are wrong,19.2%
+claims where all three checkers are wrong,16.8%
+ExpertQA: claims where all three are wrong,37.2%
+RoBERTa errors in its most confident bin (|p-0.5| >= 0.45),"1,234 (32.6%)"
+8+ chunk documents: share of claims / of cascade time,3.6% / 31.0%

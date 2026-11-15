@@ -1,0 +1,117 @@
+{
+  "frozen": {
+    "frozen_at": "2026-11-15T05:51:21+00:00",
+    "selected_on": "dev",
+    "rule_primary": "the smallest delta (lowest simulated dev cost) whose dev macro BAcc >= Flan-T5's dev macro BAcc",
+    "rule_secondary": "the delta with the highest dev macro BAcc (ties: smaller delta); reported, but not the headline result",
+    "flan_dev_bacc": 72.3777,
+    "roberta_dev_bacc": 71.7776,
+    "primary": {
+      "delta": 0.19,
+      "dev_bacc": 72.3957,
+      "dev_deferred_pct": 14.28,
+      "dev_ms_per_claim": 256.8,
+      "dev_time_vs_flan": 0.6387,
+      "reached_flan_on_dev": true
+    },
+    "secondary": {
+      "delta": 0.41,
+      "dev_bacc": 73.4013,
+      "dev_deferred_pct": 38.93,
+      "dev_ms_per_claim": 362.3,
+      "dev_time_vs_flan": 0.9011
+    },
+    "phase4_config_sha256_16": "909c2e6e27856f5f",
+    "dev_inputs_sha256_16": {
+      "roberta-large": "a762879e3023f52c",
+      "deberta-v3-large": "16dcc32fae7ad049",
+      "flan-t5-large": "ecb8258ac77d2fa2"
+    }
+  },
+  "comparisons": {
+    "Cascade, primary (delta 0.19) - Flan-T5 alone": {
+      "diff": -0.205,
+      "ci95": [
+        -1.216,
+        0.82
+      ],
+      "share_of_replicates_le_0": 0.6555
+    },
+    "Cascade, primary (delta 0.19) - RoBERTa alone": {
+      "diff": 1.367,
+      "ci95": [
+        0.667,
+        2.102
+      ],
+      "share_of_replicates_le_0": 0.0001
+    },
+    "Cascade, primary (delta 0.19) - Random deferral (same count per dataset, mean of draws)": {
+      "diff": 1.118,
+      "ci95": [
+        0.5,
+        1.75
+      ],
+      "share_of_replicates_le_0": 0.0002
+    },
+    "Majority vote (3 models) - Flan-T5 alone": {
+      "diff": 0.517,
+      "ci95": [
+        -0.391,
+        1.418
+      ],
+      "share_of_replicates_le_0": 0.1381
+    },
+    "Cascade, secondary (delta 0.41) - Flan-T5 alone": {
+      "diff": -0.044,
+      "ci95": [
+        -0.683,
+        0.59
+      ],
+      "share_of_replicates_le_0": 0.555
+    }
+  },
+  "verdict": {
+    "outcome_1_better_than_flan": false,
+    "outcome_2_non_inferior": false,
+    "outcome_2_speedup_ok": true,
+    "primary_time_vs_flan": 0.6361,
+    "primary_speedup": 1.572,
+    "outcome_2_comparable_and_faster": false,
+    "result": "negative: neither success criterion met"
+  },
+  "random_deferral": {
+    "draws": 1000,
+    "bacc_mean": 73.389,
+    "bacc_2.5_97.5": [
+      72.918,
+      73.829
+    ],
+    "share_of_draws_ge_cascade": 0.0,
+    "total_seconds_mean": 3067.5,
+    "deferred_per_dataset": {
+      "AggreFact-CNN": 108,
+      "AggreFact-XSum": 80,
+      "TofuEval-MediaS": 79,
+      "TofuEval-MeetB": 113,
+      "Wice": 39,
+      "Reveal": 138,
+      "ClaimVerify": 145,
+      "FactCheck-GPT": 137,
+      "ExpertQA": 651,
+      "Lfqa": 276
+    }
+  },
+  "bootstrap": {
+    "bootstrap": "paired, claims resampled within each dataset, macro BAcc recomputed per replicate",
+    "replicates": 10000,
+    "seed": 504,
+    "interval": "95% percentile",
+    "comparisons": [
+      "cascade - flan-t5-large",
+      "cascade - roberta-large",
+      "cascade - random deferral (mean over draws)",
+      "ensemble - flan-t5-large"
+    ]
+  },
+  "note": "cost and speed-up are simulated from Phase 3 per-claim latencies"
+}

@@ -1,0 +1,186 @@
+flan-t5-large: 20 split/dataset parts to score, 28029 claims (before resuming partial files)
+
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:01,  4.57it/s]
+Fetching 8 files:  50%|█████     | 4/8 [00:08<00:09,  2.31s/it]
+Fetching 8 files: 100%|██████████| 8/8 [00:08<00:00,  1.08s/it]
+
+Evaluating:   0%|          | 0/6 [00:00<?, ?it/s]
+Evaluating:  17%|█▋        | 1/6 [00:01<00:05,  1.01s/it]
+Evaluating:  50%|█████     | 3/6 [00:01<00:01,  2.67it/s]
+Evaluating:  83%|████████▎ | 5/6 [00:01<00:00,  2.98it/s]
+Evaluating: 100%|██████████| 6/6 [00:01<00:00,  3.03it/s]
+loaded lytang/MiniCheck-Flan-T5-Large@96eafd0 from /tmp/minicheck_models/lytang/MiniCheck-Flan-T5-Large in 15.3s (download/check 8.7s), weights on GPU: 2987.5 MB; score() check passed
+[dev] AggreFact-CNN: 459 claims, 0 already done
+    200/459  (276 ms/claim)
+    400/459  (379 ms/claim)
+    done: 182.44s, 397.47 ms/claim, peak GPU 3531.9 MB
+[dev] AggreFact-XSum: 777 claims, 0 already done
+    200/777  (188 ms/claim)
+    400/777  (213 ms/claim)
+    600/777  (220 ms/claim)
+    done: 174.21s, 224.21 ms/claim, peak GPU 3569.2 MB
+[dev] TofuEval-MediaS: 1800 claims, 0 already done
+    200/1800  (601 ms/claim)
+    400/1800  (618 ms/claim)
+    600/1800  (623 ms/claim)
+    800/1800  (620 ms/claim)
+    1000/1800  (612 ms/claim)
+    1200/1800  (622 ms/claim)
+    1400/1800  (627 ms/claim)
+    1600/1800  (635 ms/claim)
+    1800/1800  (635 ms/claim)
+    done: 1142.87s, 634.93 ms/claim, peak GPU 3496.7 MB
+[dev] TofuEval-MeetB: 1607 claims, 0 already done
+    200/1607  (529 ms/claim)
+    400/1607  (544 ms/claim)
+    600/1607  (562 ms/claim)
+    800/1607  (556 ms/claim)
+    1000/1607  (555 ms/claim)
+    1200/1607  (552 ms/claim)
+    1400/1607  (552 ms/claim)
+    1600/1607  (553 ms/claim)
+    done: 888.94s, 553.17 ms/claim, peak GPU 3404.6 MB
+[dev] Wice: 349 claims, 0 already done
+    200/349  (1162 ms/claim)
+    done: 413.39s, 1184.5 ms/claim, peak GPU 12980.1 MB
+[dev] Reveal: 1656 claims, 0 already done
+    200/1656  (76 ms/claim)
+    400/1656  (75 ms/claim)
+    600/1656  (75 ms/claim)
+    800/1656  (75 ms/claim)
+    1000/1656  (75 ms/claim)
+    1200/1656  (75 ms/claim)
+    1400/1656  (75 ms/claim)
+    1600/1656  (75 ms/claim)
+    done: 124.78s, 75.35 ms/claim, peak GPU 3102.4 MB
+[dev] ClaimVerify: 1093 claims, 0 already done
+    200/1093  (1425 ms/claim)
+    400/1093  (1182 ms/claim)
+    600/1093  (1257 ms/claim)
+    800/1093  (1232 ms/claim)
+    1000/1093  (1242 ms/claim)
+    done: 1442.45s, 1319.71 ms/claim, peak GPU 14356.2 MB
+[dev] FactCheck-GPT: 1537 claims, 0 already done
+    200/1537  (70 ms/claim)
+    400/1537  (69 ms/claim)
+    600/1537  (69 ms/claim)
+    800/1537  (69 ms/claim)
+    1000/1537  (69 ms/claim)
+    1200/1537  (69 ms/claim)
+    1400/1537  (70 ms/claim)
+    done: 106.79s, 69.48 ms/claim, peak GPU 3058.6 MB
+[dev] ExpertQA: 3773 claims, 0 already done
+    200/3773  (302 ms/claim)
+    400/3773  (255 ms/claim)
+    600/3773  (293 ms/claim)
+    800/3773  (280 ms/claim)
+    1000/3773  (367 ms/claim)
+    1200/3773  (342 ms/claim)
+    1400/3773  (338 ms/claim)
+    1600/3773  (323 ms/claim)
+    1800/3773  (319 ms/claim)
+    2000/3773  (307 ms/claim)
+    2200/3773  (318 ms/claim)
+    2400/3773  (309 ms/claim)
+    2600/3773  (325 ms/claim)
+    2800/3773  (324 ms/claim)
+    3000/3773  (309 ms/claim)
+    3200/3773  (323 ms/claim)
+    3400/3773  (316 ms/claim)
+    3600/3773  (323 ms/claim)
+    done: 1179.84s, 312.71 ms/claim, peak GPU 12523.3 MB
+[dev] Lfqa: 2029 claims, 0 already done
+    200/2029  (190 ms/claim)
+    400/2029  (195 ms/claim)
+    600/2029  (198 ms/claim)
+    800/2029  (198 ms/claim)
+    1000/2029  (201 ms/claim)
+    1200/2029  (201 ms/claim)
+    1400/2029  (202 ms/claim)
+    1600/2029  (203 ms/claim)
+    1800/2029  (202 ms/claim)
+    2000/2029  (201 ms/claim)
+    done: 407.82s, 200.99 ms/claim, peak GPU 3301.0 MB
+[test] AggreFact-CNN: 558 claims, 0 already done
+    200/558  (275 ms/claim)
+    400/558  (355 ms/claim)
+    done: 228.02s, 408.63 ms/claim, peak GPU 3683.6 MB
+[test] AggreFact-XSum: 558 claims, 0 already done
+    200/558  (200 ms/claim)
+    400/558  (211 ms/claim)
+    done: 123.66s, 221.61 ms/claim, peak GPU 3594.3 MB
+[test] TofuEval-MediaS: 726 claims, 0 already done
+    200/726  (637 ms/claim)
+    400/726  (619 ms/claim)
+    600/726  (613 ms/claim)
+    done: 447.02s, 615.73 ms/claim, peak GPU 3340.4 MB
+[test] TofuEval-MeetB: 772 claims, 0 already done
+    200/772  (524 ms/claim)
+    400/772  (542 ms/claim)
+    600/772  (552 ms/claim)
+    done: 446.29s, 578.1 ms/claim, peak GPU 3400.4 MB
+[test] Wice: 358 claims, 0 already done
+    200/358  (1101 ms/claim)
+    done: 412.85s, 1153.23 ms/claim, peak GPU 8819.9 MB
+[test] Reveal: 1710 claims, 0 already done
+    200/1710  (75 ms/claim)
+    400/1710  (74 ms/claim)
+    600/1710  (74 ms/claim)
+    800/1710  (73 ms/claim)
+    1000/1710  (73 ms/claim)
+    1200/1710  (72 ms/claim)
+    1400/1710  (73 ms/claim)
+    1600/1710  (73 ms/claim)
+    done: 124.15s, 72.6 ms/claim, peak GPU 3140.3 MB
+[test] ClaimVerify: 1088 claims, 0 already done
+    200/1088  (1098 ms/claim)
+    test-05014: out of GPU memory with 16 chunks per batch (16 chunks); scored with 8
+    test-05016: out of GPU memory with 16 chunks per batch (16 chunks); scored with 8
+    400/1088  (1145 ms/claim)
+    600/1088  (1154 ms/claim)
+    800/1088  (1268 ms/claim)
+    1000/1088  (1306 ms/claim)
+    test-05699: out of GPU memory with 16 chunks per batch (15 chunks); scored with 8
+    done: 1447.67s, 1330.58 ms/claim, peak GPU 13781.7 MB
+[test] FactCheck-GPT: 1566 claims, 0 already done
+    200/1566  (72 ms/claim)
+    400/1566  (73 ms/claim)
+    600/1566  (73 ms/claim)
+    800/1566  (73 ms/claim)
+    1000/1566  (73 ms/claim)
+    1200/1566  (73 ms/claim)
+    1400/1566  (72 ms/claim)
+    done: 112.99s, 72.15 ms/claim, peak GPU 3069.4 MB
+[test] ExpertQA: 3702 claims, 0 already done
+    200/3702  (366 ms/claim)
+    400/3702  (284 ms/claim)
+    600/3702  (345 ms/claim)
+    800/3702  (358 ms/claim)
+    1000/3702  (344 ms/claim)
+    1200/3702  (389 ms/claim)
+    1400/3702  (391 ms/claim)
+    1600/3702  (368 ms/claim)
+    1800/3702  (359 ms/claim)
+    2000/3702  (357 ms/claim)
+    2200/3702  (337 ms/claim)
+    2400/3702  (342 ms/claim)
+    2600/3702  (359 ms/claim)
+    2800/3702  (345 ms/claim)
+    3000/3702  (329 ms/claim)
+    3200/3702  (333 ms/claim)
+    3400/3702  (339 ms/claim)
+    3600/3702  (339 ms/claim)
+    done: 1230.34s, 332.35 ms/claim, peak GPU 12148.1 MB
+[test] Lfqa: 1911 claims, 0 already done
+    200/1911  (208 ms/claim)
+    400/1911  (208 ms/claim)
+    600/1911  (213 ms/claim)
+    800/1911  (206 ms/claim)
+    1000/1911  (207 ms/claim)
+    1200/1911  (205 ms/claim)
+    1400/1911  (206 ms/claim)
+    1600/1911  (205 ms/claim)
+    1800/1911  (200 ms/claim)
+    done: 380.83s, 199.28 ms/claim, peak GPU 3271.9 MB
+flan-t5-large: finished in 184.2 min

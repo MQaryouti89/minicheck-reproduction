@@ -1,0 +1,16 @@
+{
+  "source": "/kaggle/input/datasets/mohammadalqaryoutii/minicheck-code/MiniCheck_Reproduction",
+  "sha256_16": {
+    "scripts/build_notebook.py": "84622363fcab3cda",
+    "scripts/metrics.py": "d561b2bd34c7e154",
+    "scripts/minicheck_eval.py": "bfbc6ba7febcf8e8",
+    "scripts/minicheck_toy.py": "82cc13671838062a",
+    "scripts/phase4.py": "9063fe208c39dfb8",
+    "scripts/run_cascade.py": "d1479480800ed77c",
+    "scripts/run_checker.py": "412f0d4c59ed1b95",
+    "configs/experiment.json": "d4c2e65fe4099a32",
+    "configs/phase4.json": "909c2e6e27856f5f",
+    "requirements-kaggle.txt": "6b9d62f333c5b6d0",
+    "results/phase4/selected_thresholds.json": "ce2102326bc8c686"
+  }
+}

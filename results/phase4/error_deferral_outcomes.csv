@@ -1,0 +1,8 @@
+group,n,pct_of_claims
+"deferred: RoBERTa wrong, Flan-T5 right (fixed)",474,3.661
+"deferred: RoBERTa right, Flan-T5 wrong (broken)",263,2.031
+deferred: both right,676,5.22
+deferred: both wrong,353,2.726
+kept: RoBERTa right,8224,63.511
+"kept: RoBERTa wrong, Flan-T5 would be right (missed)",832,6.425
+"kept: RoBERTa wrong, Flan-T5 also wrong",2127,16.426

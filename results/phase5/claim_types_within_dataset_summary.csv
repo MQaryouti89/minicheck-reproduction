@@ -1,0 +1,4 @@
+claim type,datasets,mean RoBERTa: with - without,mean Flan-T5: with - without,mean Cascade: with - without,"mean Flan-T5 - RoBERTa, with flag","mean Flan-T5 - RoBERTa, without",datasets with RoBERTa: with - without < 0,datasets with Flan-T5: with - without < 0,datasets with Cascade: with - without < 0
+numeric,9,-0.526,-1.249,-1.061,0.116,0.84,3,6,4
+negation,4,-1.516,0.31,-2.319,1.841,0.015,2,1,2
+complex,7,-3.692,-0.858,-1.863,3.14,0.307,6,5,5

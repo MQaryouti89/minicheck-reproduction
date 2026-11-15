@@ -1,0 +1,8 @@
+# Installed on top of Kaggle's preinstalled PyTorch (do not reinstall torch: Kaggle's build matches its CUDA driver).
+# Same versions as the laptop RoBERTa run (requirements.txt), for the packages that can change results.
+transformers==4.57.6
+huggingface-hub==0.36.2
+accelerate==1.15.0
+nltk==3.10.4
+# MiniCheck itself is installed separately with --no-deps (its dependency list is unpinned and would pull new torch/transformers):
+#   pip install --no-deps "minicheck @ git+https://github.com/Liyan06/MiniCheck.git@b58b9fa69acbd1015ec970fa65dd752413a053d2"

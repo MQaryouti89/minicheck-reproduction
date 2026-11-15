@@ -1,0 +1,5 @@
+# Keep result files byte-exact (results/final/manifest_sha256.txt lists their hashes)
+results/** -text
+*.csv -text
+*.json -text
+*.jsonl -text

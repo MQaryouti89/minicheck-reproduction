@@ -1,0 +1,7 @@
+model,split,datasets_done,n,bacc_macro,macro_f1_mean,inference_seconds,ms_per_claim,load_seconds,weights_gpu_mb,peak_gpu_mb_allocated,batch_fallbacks,gpu,env_differences,paper_row_mean,paper_printed_average,diff_vs_row_mean,datasets_matching_paper
+roberta-large,dev,10/10,15080,71.778,68.653,2925.84,194.021,17.6,1355.6,1732.9,0,Tesla T4,,,,,
+roberta-large,test,10/10,12949,73.14,70.013,2360.9,182.323,17.6,1355.6,1732.9,0,Tesla T4,,73.12,72.7,0.02,9/10
+deberta-v3-large,dev,10/10,15080,70.99,67.626,4613.69,305.948,18.4,1659.6,14023.1,1,Tesla T4,,,,,
+deberta-v3-large,test,10/10,12949,72.561,68.653,3761.53,290.488,18.4,1659.6,14704.3,1,Tesla T4,,72.53,72.6,0.031,9/10
+flan-t5-large,dev,10/10,15080,72.378,70.648,6063.53,402.091,15.3,2987.5,14356.2,0,Tesla T4,,,,,
+flan-t5-large,test,10/10,12949,74.713,72.62,4953.82,382.564,15.3,2987.5,13781.7,3,Tesla T4,,74.7,74.7,0.013,8/10

@@ -1,0 +1,100 @@
+cascade (delta 0.19): 10 datasets, 12949 claims to score
+
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:03,  1.85it/s]
+Fetching 8 files:  50%|█████     | 4/8 [00:03<00:03,  1.01it/s]
+Fetching 8 files: 100%|██████████| 8/8 [00:03<00:00,  2.10it/s]
+
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:03,  1.83it/s]
+Fetching 8 files:  50%|█████     | 4/8 [00:08<00:08,  2.19s/it]
+Fetching 8 files: 100%|██████████| 8/8 [00:08<00:00,  1.03s/it]
+
+Evaluating:   0%|          | 0/3 [00:00<?, ?it/s]
+Evaluating:  33%|███▎      | 1/3 [00:01<00:02,  1.13s/it]
+Evaluating: 100%|██████████| 3/3 [00:01<00:00,  2.51it/s]
+
+Evaluating:   0%|          | 0/3 [00:00<?, ?it/s]
+Evaluating:  33%|███▎      | 1/3 [00:00<00:00,  2.60it/s]
+Evaluating: 100%|██████████| 3/3 [00:00<00:00,  6.77it/s]
+Evaluating: 100%|██████████| 3/3 [00:00<00:00,  5.83it/s]
+loaded both checkers in 29.3s; GPU memory of weights: {'roberta-large': 1355.6, 'flan-t5-large': 2987.5} (total 4352.2 MB); score() checks passed
+[test] AggreFact-CNN: 558 claims, 0 already done
+    200/558  (193 ms/claim)
+    400/558  (285 ms/claim)
+    done: 108 deferred, 176.81s end to end, peak GPU 4865.2 MB
+[test] AggreFact-XSum: 558 claims, 0 already done
+    200/558  (181 ms/claim)
+    400/558  (177 ms/claim)
+    done: 80 deferred, 100.92s end to end, peak GPU 4794.7 MB
+[test] TofuEval-MediaS: 726 claims, 0 already done
+    200/726  (415 ms/claim)
+    400/726  (376 ms/claim)
+    600/726  (360 ms/claim)
+    done: 79 deferred, 262.28s end to end, peak GPU 4695.8 MB
+[test] TofuEval-MeetB: 772 claims, 0 already done
+    200/772  (379 ms/claim)
+    400/772  (369 ms/claim)
+    600/772  (370 ms/claim)
+    done: 113 deferred, 297.48s end to end, peak GPU 4748.6 MB
+[test] Wice: 358 claims, 0 already done
+    200/358  (655 ms/claim)
+    done: 39 deferred, 254.61s end to end, peak GPU 10176.5 MB
+[test] Reveal: 1710 claims, 0 already done
+    200/1710  (51 ms/claim)
+    400/1710  (50 ms/claim)
+    600/1710  (49 ms/claim)
+    800/1710  (48 ms/claim)
+    1000/1710  (48 ms/claim)
+    1200/1710  (48 ms/claim)
+    1400/1710  (48 ms/claim)
+    1600/1710  (48 ms/claim)
+    done: 138 deferred, 82.35s end to end, peak GPU 4428.8 MB
+[test] ClaimVerify: 1088 claims, 0 already done
+    200/1088  (679 ms/claim)
+    400/1088  (737 ms/claim)
+    600/1088  (714 ms/claim)
+    800/1088  (725 ms/claim)
+    1000/1088  (749 ms/claim)
+    done: 145 deferred, 829.03s end to end, peak GPU 13617.3 MB
+[test] FactCheck-GPT: 1566 claims, 0 already done
+    200/1566  (47 ms/claim)
+    400/1566  (50 ms/claim)
+    600/1566  (48 ms/claim)
+    800/1566  (47 ms/claim)
+    1000/1566  (48 ms/claim)
+    1200/1566  (47 ms/claim)
+    1400/1566  (48 ms/claim)
+    done: 137 deferred, 75.42s end to end, peak GPU 4426.0 MB
+[test] ExpertQA: 3702 claims, 0 already done
+    200/3702  (245 ms/claim)
+    400/3702  (199 ms/claim)
+    600/3702  (254 ms/claim)
+    800/3702  (255 ms/claim)
+    1000/3702  (261 ms/claim)
+    1200/3702  (281 ms/claim)
+    1400/3702  (286 ms/claim)
+    1600/3702  (272 ms/claim)
+    1800/3702  (264 ms/claim)
+    2000/3702  (266 ms/claim)
+    2200/3702  (252 ms/claim)
+    2400/3702  (256 ms/claim)
+    2600/3702  (270 ms/claim)
+    2800/3702  (261 ms/claim)
+    3000/3702  (249 ms/claim)
+    3200/3702  (254 ms/claim)
+    3400/3702  (259 ms/claim)
+    3600/3702  (258 ms/claim)
+    done: 651 deferred, 935.76s end to end, peak GPU 11648.1 MB
+[test] Lfqa: 1911 claims, 0 already done
+    200/1911  (205 ms/claim)
+    400/1911  (196 ms/claim)
+    600/1911  (200 ms/claim)
+    800/1911  (195 ms/claim)
+    1000/1911  (199 ms/claim)
+    1200/1911  (199 ms/claim)
+    1400/1911  (197 ms/claim)
+    1600/1911  (197 ms/claim)
+    1800/1911  (192 ms/claim)
+    done: 276 deferred, 365.41s end to end, peak GPU 4617.7 MB
+cascade: finished in 57.1 min

@@ -1,0 +1,56 @@
+{
+  "_note": "Phase 4 analysis plan, fixed on 2026-11-15 BEFORE any cascade, ensemble or random-deferral result was computed. Do not edit after the dev analysis has run; record any change in PROGRESS.md with the reason.",
+  "inputs": "results/kaggle-t4/minicheck_results (Phase 3 predictions; read-only)",
+  "outputs": "results/phase4",
+  "join_key": "idx; ids, labels and datasets must be identical across models or the script stops",
+
+  "cascade": {
+    "first_stage": "roberta-large",
+    "second_stage": "flan-t5-large",
+    "confidence": "|p_roberta - 0.5|",
+    "defer_rule": "defer the claim to Flan-T5 if |p_roberta - 0.5| < delta; otherwise keep RoBERTa's prediction",
+    "final_prediction": "prediction of the model that made the decision, at the paper's threshold 0.5 (no threshold tuning)",
+    "delta_grid": {"start": 0.0, "stop": 0.5, "step": 0.005, "note": "delta = 0 is RoBERTa alone; the largest delta defers every claim, i.e. Flan-T5 alone"},
+    "thresholds_global": "one delta for all datasets (the dataset is unknown at deployment time)"
+  },
+
+  "selection_on_dev": {
+    "primary": "the smallest delta (lowest simulated dev cost) whose dev macro BAcc >= Flan-T5's dev macro BAcc",
+    "primary_if_none": "if no delta reaches Flan-T5's dev BAcc, the delta with the highest dev macro BAcc (ties: smaller delta); reported as a negative result",
+    "secondary": "the delta with the highest dev macro BAcc (ties: smaller delta); reported, but not the headline result",
+    "frozen_file": "results/phase4/selected_thresholds.json; the test evaluation reads delta only from this file"
+  },
+
+  "ensemble": {
+    "rule": "majority vote of the three models' predictions (each at threshold 0.5); no weights, nothing tuned",
+    "cost": "sum of the three models' measured latencies (run one after another on one GPU)"
+  },
+
+  "random_deferral_control": {
+    "rule": "defer randomly chosen claims, with the same number of deferred claims per dataset as the cascade",
+    "draws": 1000,
+    "seed": 504
+  },
+
+  "oracle_reference": "defer exactly the claims RoBERTa gets wrong and Flan-T5 gets right (upper bound for any RoBERTa->Flan-T5 deferral rule; reference only)",
+
+  "cost_model": {
+    "per_claim_ms": "latency_roberta + (latency_flan if deferred), using the measured per-claim latency_ms of each model on the T4",
+    "excluded": "model loading (reported separately) and the 5 OOM-retry delays (2.5 s in total), as in the Phase 3 baselines",
+    "label": "simulated from separately measured latencies; not an end-to-end measurement"
+  },
+
+  "statistics": {
+    "bootstrap": "paired, claims resampled within each dataset, macro BAcc recomputed per replicate",
+    "replicates": 10000,
+    "seed": 504,
+    "interval": "95% percentile",
+    "comparisons": ["cascade - flan-t5-large", "cascade - roberta-large", "cascade - random deferral (mean over draws)", "ensemble - flan-t5-large"]
+  },
+
+  "success_criteria_on_test": {
+    "outcome_1_better_than_flan": "lower bound of the 95% CI of (cascade - Flan-T5) macro BAcc > 0",
+    "outcome_2_comparable_and_faster": "lower bound of the 95% CI of (cascade - Flan-T5) > -0.5 BAcc points AND simulated total inference time <= 0.8 x Flan-T5's (speed-up >= 1.25x)",
+    "otherwise": "negative result, reported as such"
+  }
+}
