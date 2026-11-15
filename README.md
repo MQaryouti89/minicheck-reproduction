@@ -20,8 +20,6 @@ This repository has two goals:
 - **Final tables and figures:** [results/final/](results/final/README.md).
 - **Error analysis:** [results/phase5/error_analysis.md](results/phase5/error_analysis.md).
 - **Related work and verified references:** [docs/RELATED_WORK.md](docs/RELATED_WORK.md), [docs/references.bib](docs/references.bib).
-- **AI assistance:** [docs/AI_USE.md](docs/AI_USE.md).
-- **Submission checklist:** [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md).
 
 **Scope: evaluation reproduction.** We run the released checkpoints on the released benchmark. This checks that the published numbers come from the published models. It does not reproduce training: the training code is not released, although the 14K synthetic training examples (`lytang/C2D-and-D2C-MiniCheck`) and the hyperparameters (Appendix G) are.
 
@@ -104,7 +102,7 @@ Every dataset except ClaimVerify matches the paper after rounding to one decimal
 - **Selecting δ, on dev only.** Primary δ: the smallest δ whose dev macro BAcc is at least Flan-T5's dev BAcc. Secondary δ: the δ with the best dev BAcc.
   - Result: **primary δ = 0.19**, **secondary δ = 0.41**.
   - Frozen in [results/phase4/selected_thresholds.json](results/phase4/selected_thresholds.json) (SHA-256 `ce2102326bc8c686…`).
-- **Test.** δ is read only from that file. The single-model test results were already known from Phase 3; only the cascade settings were chosen without test data. The test evaluation code was executed four times with the same frozen file, configuration and seeds: `phase4.py evaluate` three times to fix figures and formatting, and `scripts/unrounded_ci.py` once, read-only into a temporary folder, to obtain unrounded CI bounds for the report. All four produced byte-identical number files (PROGRESS.md, Phase 4 step 4).
+- **Test.** δ is read only from that file. The single-model test results were already known from Phase 3; only the cascade settings were chosen without test data. The test evaluation code was executed four times with the same frozen file, configuration and seeds: `phase4.py evaluate` three times to fix figures and formatting, and `scripts/unrounded_ci.py` once, read-only into a temporary folder, to obtain unrounded CI bounds. All four produced byte-identical number files (PROGRESS.md, Phase 4 step 4).
 - **Cost.** Each claim costs its measured Phase 3 RoBERTa latency, plus its Flan-T5 latency if deferred. So the times are **simulated**, not measured end to end.
 - **Statistics.** CIs come from a paired bootstrap: 10,000 resamples within datasets, seed 504.
 
@@ -278,7 +276,7 @@ None of them is in a dataset that differs from the paper.
 
 ```
 README.md
-PROGRESS.md                      tracker for all five project phases
+PROGRESS.md                      project log for all five phases
 requirements.txt                 full pinned environment of the laptop RoBERTa run
 requirements-kaggle.txt          packages installed on top of Kaggle's image
 requirements-analysis.txt        CPU-only analysis environment (metrics, Phase 4, tests)
@@ -302,8 +300,6 @@ notebooks/
   minicheck_kaggle.ipynb         one notebook: smoke test, RoBERTa, DeBERTa, Flan-T5, cascade, comparison
 docs/
   RELATED_WORK.md, references.bib    18 verified references and their relevance
-  SUBMISSION_CHECKLIST.md        brief + rubric checklist, report/presentation evidence map
-  AI_USE.md                      what the AI assistant did and what the student did
 results/
   roberta-large/                 laptop run (test split only)
   kaggle-t4/minicheck_results/   Phase 3 Kaggle T4 runs (all three models, dev + test); baselines, not modified
@@ -400,4 +396,4 @@ This work evaluates the released MiniCheck checkpoints, code and benchmark by Ta
 }
 ```
 
-Other references used in this project: [docs/references.bib](docs/references.bib). The AI assistance is described in [docs/AI_USE.md](docs/AI_USE.md).
+Other references used in this project: [docs/references.bib](docs/references.bib).

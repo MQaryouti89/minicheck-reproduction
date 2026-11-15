@@ -4,7 +4,7 @@ The bibliographic details of every entry were checked on 2026-11-15:
 - **ACL Anthology entries** against their Anthology pages; the BibTeX in [references.bib](references.bib) is the Anthology's own export.
 - **The other entries** against the publisher or proceedings pages: ACM DL DOI, PMLR, NeurIPS proceedings or arXiv, and the TMLR listing.
 
-The relevance notes say only what each paper does and how it relates to this project. They are notes for the report, not report text.
+The relevance notes say only what each paper does and how it relates to this project.
 
 The column **"In MiniCheck?"** says whether the MiniCheck paper itself cites or compares against the work (checked in the paper text).
 
@@ -44,16 +44,16 @@ The column **"In MiniCheck?"** says whether the MiniCheck paper itself cites or 
 | Dror et al. (2018), *The Hitchhiker's Guide to Testing Statistical Significance in Natural Language Processing*, ACL. [P18-1128](https://aclanthology.org/P18-1128/) | Protocol for choosing significance tests in NLP | Justifies a paired, non-parametric test for comparing systems on the same test claims |
 | Card et al. (2020), *With Little Power Comes Great Responsibility*, EMNLP. [2020.emnlp-main.745](https://aclanthology.org/2020.emnlp-main.745/) | Many NLP comparisons are statistically underpowered; recommends power analysis | **Directly explains our negative non-inferiority result.** The −0.5 margin was smaller than the ±1.0 CI half-width the test set allows, and no power analysis was done before fixing it |
 
-## Suggested five "significant papers" for the submission folder
+## Five key papers
 
-The brief asks for five significant papers in the shared folder. These five cover the main lines of the report:
+These five cover the main lines of this project:
 1. Laban et al. (2022), SummaC: chunk-and-aggregate NLI checking, and BAcc.
 2. Zha et al. (2023), AlignScore: the strongest earlier checker MiniCheck compares against.
 3. Tang et al. (2023), AggreFact: the benchmark origin, and the error-detector analysis.
 4. Varshney and Baral (2022), Model Cascading: the method family of our extension.
 5. Card et al. (2020), statistical power: the methodological lesson of our negative result.
 
-The MiniCheck paper itself should be included in addition to these five.
+They are read alongside the MiniCheck paper itself.
 
 ## Novelty statement
 

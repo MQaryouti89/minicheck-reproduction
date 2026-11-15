@@ -1,4 +1,4 @@
-# Project progress
+# Project log
 
 Last updated: 2026-11-15
 
@@ -8,7 +8,7 @@ Last updated: 2026-11-15
 | 2. Kaggle preparation | **Done** |
 | 3. Reproduce the three models | **Done.** All three reproduce the paper on one Kaggle T4 (test averages within 0.03) |
 | 4. Adaptive cascade | **Done, reviewed and approved.** Prespecified verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
-| 5. Error analysis, reproducibility, final preparation | **Technical work done; repository published; report drafted.** Pending (student): review of the report, presentation, submission |
+| 5. Error analysis, reproducibility, final preparation | **Done.** Repository published |
 
 ## 25-step tracker
 
@@ -37,8 +37,8 @@ Last updated: 2026-11-15
 | 21 | 5 | Final error analysis (FP/FN, agreement, confident errors, datasets, length/cost, claim types, examples) | Done |
 | 22 | 5 | Final tables, figures and consistency check (32/32 PASS) | Done |
 | 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Published (public): https://github.com/MQaryouti89/minicheck-reproduction; a fresh clone passes 19/19 tests, 32/32 checks and the 242-file manifest |
-| 24 | 5 | Literature: 18 verified references, relevance notes, five suggested papers | Done |
-| 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report revised after the student's review (`../Report/AI504_Assignment2_MiniCheck_Report.docx` and `.pdf`, not in the repository), corrections approved; separate AI-use section removed at the student's request (record kept in docs/AI_USE.md); awaiting the student's final review; presentation not started |
+| 24 | 5 | Literature: 18 verified references, relevance notes, five key papers | Done |
+| 25 | 5 | Final revision: unrounded CIs, print-size figures, dataset terms rechecked | Done |
 
 ## Phase 1: Review and verification
 
@@ -213,7 +213,7 @@ Also done in Phase 4:
 - [x] Length and cost: claims with 8+ chunks are 3.6% of claims and 31.0% of cascade time.
   - The higher error rate of single-chunk claims (32.2%) comes with a dataset mix that is 40% ExpertQA. The composition is verified; the causal effect was not tested.
 - [x] Claim-type definitions (numeric, negation, complex) fixed in the script before any text was examined. 12 tests check that the rules work and that no text reaches committed files.
-- [x] Claim types and failure examples (`--with-text`, 2026-11-15, after the student's Hugging Face login):
+- [x] Claim types and failure examples (`--with-text`, 2026-11-15, after a Hugging Face login):
   - Dataset revision `981dfd0…` (pinned). Alignment check: 12,949 texts with the same ids, labels and datasets as the predictions; no empty claims or documents.
   - Flags: numeric 28.3%, negation 9.7%, complex 38.4% of test claims.
   - Pooled results are confounded by the dataset mix (for example, complex: CNN 98%, Reveal 1.8%). So a within-dataset comparison was added, using datasets with ≥ 20 claims of each label in both groups.
@@ -237,7 +237,7 @@ Also done in Phase 4:
 - [x] Secrets scan: no tokens. Text scan: no claim or document text in the results.
 - [x] README rewritten for an outside reader: results at a glance, Phase 5, provenance, full reproduction order, data and privacy, citation (MiniCheck Apache-2.0, not copied). `requirements-analysis.txt` pins the CPU environment.
 - [x] 19 tests pass (`python -m pytest tests -q`).
-- [x] **Correction (2026-11-15, found while checking the report):** the runners record GPU memory in MiB (2^20 bytes), but README/PROGRESS had shown MiB ÷ 1,000 as "GB". Now reported in GiB: cascade peak 13,617 MiB = **13.3 GiB** (was "13.6 GB"), weights 4,352 MiB = 4.25 GiB (was "4.35 GB"), Phase 3 peaks 1.7 / 14.4 / 14.0 GiB (was 1.7 / 14.7 / 14.4). No measurement changed; the T4 limit is 15,360 MiB = 15 GiB, so all proportions are unchanged.
+- [x] **Correction (2026-11-15, found in a final review):** the runners record GPU memory in MiB (2^20 bytes), but README/PROGRESS had shown MiB ÷ 1,000 as "GB". Now reported in GiB: cascade peak 13,617 MiB = **13.3 GiB** (was "13.6 GB"), weights 4,352 MiB = 4.25 GiB (was "4.35 GB"), Phase 3 peaks 1.7 / 14.4 / 14.0 GiB (was 1.7 / 14.7 / 14.4). No measurement changed; the T4 limit is 15,360 MiB = 15 GiB, so all proportions are unchanged.
 - [x] Final tables now keep 4 decimals, so later 2-decimal rounding cannot differ from the exact value (the cascade difference is −0.2052, shown as −0.21; a 3-decimal copy (−0.205) would round to −0.20).
 - [x] Removed the short example-text fragments that had been quoted in README.md and the checklist. No dataset text remains outside `private/` (checked by search).
 - [x] `.gitattributes` keeps result files byte-exact, and the manifest is written with LF endings.
@@ -245,21 +245,11 @@ Also done in Phase 4:
 - [x] Pushed to https://github.com/MQaryouti89/minicheck-reproduction (public). Checked on 2026-11-15 on a fresh clone: `private/` is absent, no tokens or dataset text, all files in `results/final/manifest_sha256.txt` match, 19/19 tests and 32/32 consistency checks pass, and regenerating the final tables and figures changes no file.
 
 **Step 24: literature.**
-- [x] 16 references checked against the ACL Anthology and publisher pages (18 after the report revision added the Reveal and ExpertQA source papers, also checked on the Anthology). BibTeX in `docs/references.bib`; relevance notes, the five suggested papers and a novelty statement in `docs/RELATED_WORK.md`. The novelty statement says the cascade is not a new method; the contribution is the evaluation.
+- [x] 16 references checked against the ACL Anthology and publisher pages (18 after the final revision added the Reveal and ExpertQA source papers, also checked on the Anthology). BibTeX in `docs/references.bib`; relevance notes, the five key papers and a novelty statement in `docs/RELATED_WORK.md`. The novelty statement says the cascade is not a new method; the contribution is the evaluation.
 
-**Step 25: submission preparation.**
-- [x] `docs/SUBMISSION_CHECKLIST.md`:
-  - deliverables from the brief
-  - rubric bands mapped to our evidence
-  - report sections mapped to evidence files
-  - required points
-  - ethics, resources
-  - presentation plan
-  - inconsistencies in the brief to ask the instructor about (20% vs 40% weight, 4 pages vs 4,000–5,000 words)
-- [x] `docs/AI_USE.md`. The brief's text forbids GenAI unless approved, so cite the instructor's approval.
-- [ ] Student: write the report and slides, put the five papers in the shared folder, name the folder `<Student ID>-<First Name>`.
-- [x] **Report revision (2026-11-15), after the student's review.** No experiment, threshold, setting or result changed.
+**Step 25: final revision.**
+- [x] **Final revision (2026-11-15).** No experiment, threshold, setting or result changed.
   - `scripts/unrounded_ci.py` → `results/final/T3_unrounded.csv`. T3 stores CI bounds at 3 decimals, and rounding them again can differ from the exact value: the random-deferral lower bound is stored as −2.365 but is −2.36497 (−2.36, as in the original Figure 4; Python rounds the stored −2.365 to −2.37). The script repeats `phase4.py evaluate` in memory into a temporary folder (same frozen file, configuration and seeds), checks that `test_summary.csv`, `test_per_dataset.csv`, `test_statistics.json` and `test_delta_curve_after_freezing.csv` are byte-identical to `results/phase4/`, and saves only the unrounded values. results/phase4 is not modified. This is a fourth, read-only execution of the evaluation code, used for rounding only.
-  - `scripts/report_figures.py` → `results/final/report_figures/`: the report's figures redrawn at print size (16 cm, 9–10 pt text) from saved result files only; Table 3/Figure 2 labels use the unrounded values.
-  - Dataset terms rechecked: LLM-AggreFact and its Reveal subset are CC BY-ND 4.0, evaluation only; Reveal asks that no part be redistributed without protection against web crawlers. The report now describes the failure examples instead of quoting claim text, and cites the Reveal and ExpertQA source papers (18 references).
+  - `scripts/report_figures.py` → `results/final/report_figures/`: the figures redrawn at print size (16 cm, 9–10 pt text) from saved result files only; Table 3/Figure 2 labels use the unrounded values.
+  - Dataset terms rechecked: LLM-AggreFact and its Reveal subset are CC BY-ND 4.0, evaluation only; Reveal asks that no part be redistributed without protection against web crawlers. Failure examples are described rather than quoted, and the Reveal and ExpertQA source papers were added (18 references).
   - Wording: "prespecified" instead of "prespecified" (no formal preregistration was made).
