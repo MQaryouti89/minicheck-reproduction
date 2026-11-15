@@ -27,6 +27,7 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "svg.fonttype": "none"})
 
 
 def setup(h, grid="both"):
+    """Create a 16 cm wide figure of height `h` inches in the report style; `grid` selects the grid axes."""
     fig, ax = plt.subplots(figsize=(W, h), dpi=300)
     fig.patch.set_facecolor(COL["surface"]); ax.set_facecolor(COL["surface"])
     for s in ("top", "right"):
@@ -41,30 +42,36 @@ def setup(h, grid="both"):
 
 
 def xlabel(ax, s):
+    """Set the x-axis label in the report style."""
     ax.set_xlabel(s, color=COL["muted"], fontsize=LABEL)
 
 
 def ylabel(ax, s):
+    """Set the y-axis label in the report style."""
     ax.set_ylabel(s, color=COL["muted"], fontsize=LABEL)
 
 
 def legend(ax, **kw):
+    """Add a frameless legend in the report style."""
     ax.legend(frameon=False, fontsize=NOTE, labelcolor=COL["text"], **kw)
 
 
 def save(fig, name):
+    """Lay out the figure, save it to results/final/report_figures/ and close it."""
     fig.tight_layout()
     fig.savefig(OUT / name, facecolor=COL["surface"])
     plt.close(fig)
 
 
 def note(ax, text, xy, dx=6, dy=4, ha="left", colour=None, size=NOTE, box=False):
+    """Annotate point `xy` with `text`, offset by (dx, dy) points, optionally on a white box."""
     ax.annotate(text, xy, textcoords="offset points", xytext=(dx, dy), ha=ha, fontsize=size,
                 color=colour or COL["text"], zorder=7,
                 bbox=dict(fc=COL["surface"], ec="none", pad=0.6) if box else None)
 
 
 def main():
+    """Draw every data figure of the report from the saved result files (no model is run)."""
     OUT.mkdir(parents=True, exist_ok=True)
     t1 = pd.read_csv(FIN / "T1_reproduction_vs_paper.csv")
     t3 = pd.read_csv(FIN / "T3_all_approaches_test.csv")
@@ -193,7 +200,7 @@ def main():
     legend(ax, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2)
     save(fig, "fig5_claim_types.png")
 
-    # Figure C1: our BAcc minus the paper's, per dataset
+    # Figure C1: our BAcc minus the original Table 2, per dataset
     d = t1.iloc[::-1].reset_index(drop=True)
     fig, ax = setup(3.6, grid="x")
     ax.axvspan(-0.05, 0.05, color=COL["grid"], alpha=0.7, lw=0)
@@ -203,7 +210,7 @@ def main():
         ax.plot(d[f"{model} diff"], np.arange(len(d)) + off, "o", ms=6, color=c, mec=COL["surface"], mew=1, label=lab)
     ax.set_yticks(range(len(d))); ax.set_yticklabels(d.dataset, fontsize=TICK, color=COL["text"])
     ax.tick_params(left=False)
-    xlabel(ax, "our test BAcc minus the paper's Table 2 (points)")
+    xlabel(ax, "our test BAcc minus the original Table 2 (points)")
     legend(ax, loc="lower right")
     save(fig, "figC1_reproduction_vs_paper.png")
 

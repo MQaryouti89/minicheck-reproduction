@@ -42,6 +42,7 @@ WORD = re.compile(r"[a-z]+(?:'[a-z]+)?")
 
 
 def claim_features(claim):
+    """Word-rule flags for one claim, fixed before any text was read: word count, numeric, negation, complex."""
     text = str(claim).lower()
     words = WORD.findall(text)
     return {
@@ -54,6 +55,7 @@ def claim_features(claim):
 
 # ---------------------------------------------------------------- helpers
 def pooled_bacc(y, pred):
+    """Balanced accuracy (%) of `pred` against labels `y` over all rows; NaN if one class is missing."""
     c = pred == y
     return 50 * (c[y == 1].mean() + c[y == 0].mean()) if (y == 1).any() and (y == 0).any() else np.nan
 
@@ -78,6 +80,7 @@ def boot_pooled(D, mask, preds, reps=REPS, seed=SEED):
 
 
 def figure_setup(w=7.5, h=4.2):
+    """Create a figure and axes in the shared style (white background, light spines, small ticks)."""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -93,11 +96,17 @@ def figure_setup(w=7.5, h=4.2):
 
 
 def md(df, fmt=2):
+    """Markdown table with `fmt` decimals (wrapper around phase4.md_table)."""
     return phase4.md_table(df, fmt)
 
 
 # ---------------------------------------------------------------- analyses that need only predictions
 def prediction_analyses(D, delta):
+    """Analyses that need only predictions: model agreement, false positives and negatives,
+    confident errors, document length and cost, per-dataset BAcc.
+
+    Returns (tables, (cascade predictions, cascade cost, deferral mask)).
+    """
     y = D.label.values
     cR, cD, cF = (D.pred_R.values == y), (D.pred_D.values == y), (D.pred_F.values == y)
     pred_c, cost_c, d = phase4.cascade(D, delta)
@@ -176,6 +185,7 @@ def prediction_analyses(D, delta):
 
 def prediction_figures(D, delta, res):
     # confidence bins: RoBERTa vs Flan-T5 accuracy (test), with the frozen delta
+    """Draw the error-analysis figures that need only predictions (confidence bins, error categories, length)."""
     conf = np.abs(D.p_R.values - 0.5)
     edges = np.round(np.arange(0, 0.55, 0.05), 2)
     b = np.clip(np.digitize(conf, edges) - 1, 0, len(edges) - 2)
@@ -241,12 +251,16 @@ def prediction_figures(D, delta, res):
 
 # ---------------------------------------------------------------- claim types and examples (needs the gated text)
 def load_text(data_dir=None):
+    """Load the gated test texts (dataset, label, document, claim) indexed by claim id; used only with --with-text."""
     import run_checker as rc
     df = rc.load_split("test", data_dir, None)
     return df.set_index("idx")[["dataset", "label", "doc", "claim"]]
 
 
 def text_analyses(D, T, pred_c, d, delta):
+    """Claim-type analyses that need the texts. Checks that ids, labels and datasets match the
+    predictions, writes the claim flags (never the text) and returns (flags, BAcc by flag, prevalence).
+    """
     T = T.loc[D.index]
     assert (T.label.values == D.label.values).all() and (T.dataset.values == D.dataset.values).all(), \
         "text file does not match the prediction ids"
@@ -364,6 +378,7 @@ def select_examples(D, T, F, pred_c, d):
 
 # ---------------------------------------------------------------- report
 def write_md(res, delta, types=None, prevalence=None, examples=None, extra=None):
+    """Write results/phase5/error_analysis.md from the analysis tables (and claim-type results when available)."""
     lines = ["# Phase 5 error analysis (test split)", "",
              f"Models: Phase 3 predictions on the Kaggle T4. Cascade: frozen δ = {delta} (Phase 4). "
              "Positive class = supported, so FP = unsupported claim accepted (missed error), "
@@ -402,6 +417,7 @@ def write_md(res, delta, types=None, prevalence=None, examples=None, extra=None)
 
 
 def main():
+    """Command-line entry point: prediction-only analyses, plus claim types and failure examples with --with-text."""
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--with-text", action="store_true", help="claim types and examples (needs the gated test file)")
     ap.add_argument("--data-dir", type=Path, help="read test.parquet from here instead of Hugging Face")

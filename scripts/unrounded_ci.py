@@ -26,6 +26,9 @@ COMPARE = ["test_summary.csv", "test_per_dataset.csv", "test_statistics.json", "
 
 
 def main():
+    """Repeat `phase4.py evaluate` in a temporary folder, check that its number files are byte-identical to
+    results/phase4/, and save the unrounded BAcc, differences and CIs to results/final/T3_unrounded.csv.
+    """
     src = ROOT / "results" / "phase4"
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
@@ -36,6 +39,7 @@ def main():
         draw = phase4.difference_figure
 
         def grab(summary):
+            """Keep a copy of the summary table passed to the figure function, then draw the figure as usual."""
             captured["summary"] = summary.copy()
             draw(summary)
 

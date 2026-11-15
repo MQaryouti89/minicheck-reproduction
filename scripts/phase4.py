@@ -39,6 +39,7 @@ THRESHOLD = CFG["threshold"]
 
 
 def sha(path):
+    """Return the first 16 hex characters of a file's SHA-256 (used to detect changes to frozen inputs)."""
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
 
 
@@ -70,31 +71,41 @@ def load(split, results=None):
 
 
 def deltas():
+    """Return the delta grid fixed in configs/phase4.json (start, stop, step), rounded to avoid float drift."""
     g = P4["cascade"]["delta_grid"]
     n = int(round((g["stop"] - g["start"]) / g["step"])) + 1
     return np.round(g["start"] + g["step"] * np.arange(n), 6)
 
 
 def deferred(D, delta):
+    """Boolean mask of the claims the cascade sends to Flan-T5: |p_RoBERTa - 0.5| < delta."""
     return (D.p_R - 0.5).abs().values < delta
 
 
 # ---------------------------------------------------------------- approaches: (prediction, cost in ms, deferred mask)
 def cascade(D, delta):
+    """Simulate the RoBERTa -> Flan-T5 cascade at one delta.
+
+    Returns (predictions, per-claim cost in ms, deferral mask). The cost is RoBERTa's measured
+    latency plus Flan-T5's measured latency for deferred claims.
+    """
     d = deferred(D, delta)
     return np.where(d, D.pred_F, D.pred_R), D.lat_R.values + d * D.lat_F.values, d
 
 
 def single(D, key):
+    """Predictions and per-claim latency of one checker alone (key 'R', 'D' or 'F'); no deferral mask."""
     return D[f"pred_{key}"].values, D[f"lat_{key}"].values, None
 
 
 def ensemble(D):
+    """Majority vote of the three checkers; its per-claim cost is the sum of the three latencies."""
     votes = D.pred_R.values + D.pred_D.values + D.pred_F.values
     return (votes >= 2).astype(int), (D.lat_R + D.lat_D + D.lat_F).values, None
 
 
 def oracle(D):
+    """Upper bound: defer exactly the claims that RoBERTa gets wrong and Flan-T5 gets right."""
     d = ((D.pred_R != D.label) & (D.pred_F == D.label)).values
     return np.where(d, D.pred_F, D.pred_R), D.lat_R.values + d * D.lat_F.values, d
 
@@ -165,6 +176,7 @@ def bootstrap(D, correct, costs, replicates, seed, chunk=500):
 
 
 def ci(x):
+    """Percentile 95% confidence interval (2.5th and 97.5th percentiles) of bootstrap replicates."""
     lo, hi = np.percentile(x, [2.5, 97.5])
     return float(lo), float(hi)
 
@@ -261,6 +273,7 @@ def difference_figure(summary):
 
 # ---------------------------------------------------------------- shared helpers
 def curve_table(D):
+    """Cascade BAcc, deferral rate and simulated cost for every delta on the grid (one row per delta)."""
     flan_total = D.lat_F.sum() / 1000
     rows = []
     for dv in deltas():
@@ -283,6 +296,7 @@ def approaches(D, frozen, random_masks=None):
 
 
 def md_table(df, floatfmt=2):
+    """Render a DataFrame as a Markdown table; floats get `floatfmt` decimals and NaN becomes '-'."""
     cols = list(df.columns)
     lines = ["| " + " | ".join(cols) + " |", "|" + "|".join("---:" if pd.api.types.is_numeric_dtype(df[c]) else "---"
                                                           for c in cols) + "|"]
@@ -308,6 +322,7 @@ def check_baselines(D, split):
 
 
 def dev_figure(D, curve, frozen):
+    """Draw the development-split trade-off figure: delta curve, single models, majority vote and frozen deltas."""
     pts = [(NAMES[k], D[f"lat_{k}"].mean(), macro_bacc(D, D[f"pred_{k}"].values)[0], COL["base"], "o")
            for k in ("R", "D", "F")]
     ens = ensemble(D)
@@ -322,6 +337,11 @@ def dev_figure(D, curve, frozen):
 
 # ---------------------------------------------------------------- select (dev only)
 def select(args):
+    """Step 1, development split only: compute the delta curve, choose the primary and secondary
+    delta with the prespecified rules and freeze them in results/phase4/selected_thresholds.json.
+
+    Refuses to run if a delta is already frozen (unless --overwrite) or if test results exist.
+    """
     if FROZEN.exists() and not args.overwrite:
         sys.exit(f"{FROZEN} exists: delta is already frozen. Re-selecting must be a deliberate, documented "
                  "decision (pass --overwrite and record why in PROGRESS.md).")
@@ -373,6 +393,10 @@ def select(args):
 
 # ---------------------------------------------------------------- evaluate (test, once)
 def evaluate(args):
+    """Step 2, test split, run once: check that configs/phase4.json is unchanged since freezing, read
+    the frozen delta, score every approach with paired-bootstrap CIs and the random-deferral
+    control, and write results/phase4/ (the inputs of report Table 3).
+    """
     if not FROZEN.exists():
         sys.exit("no frozen delta: run `phase4.py select` (dev) first")
     frozen = json.loads(FROZEN.read_text())
@@ -560,11 +584,13 @@ def error_analysis(D, frozen, apps, primary_name):
 
 
 def macro_bacc_ds(sub, pred):
+    """Balanced accuracy (%) of `pred` on one dataset's rows `sub` (mean of the two class recalls)."""
     y, c = sub.label.values, pred == sub.label.values
     return 50 * (c[y == 1].mean() + c[y == 0].mean())
 
 
 def write_report(summary, per, comparisons, verdict, random_summary, frozen, errors):
+    """Write results/phase4/results_test.md: main table, precision/recall/F1, per-dataset BAcc and verdict."""
     s = summary.copy()
     s["BAcc (95% CI)"] = [f"{b:.2f} [{l:.2f}, {h:.2f}]" for b, l, h in zip(s.bacc, s.bacc_ci_low, s.bacc_ci_high)]
     s["Δ vs Flan-T5 (95% CI)"] = ["–" if np.isnan(l) else f"{d:+.2f} [{l:+.2f}, {h:+.2f}]"
@@ -661,6 +687,7 @@ def measured(args):
 
 
 def main():
+    """Command-line entry point: `python scripts/phase4.py {select|evaluate|measured}`."""
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("step", choices=["select", "evaluate", "measured"])
     ap.add_argument("--overwrite", action="store_true", help="select: replace an existing frozen delta (document why)")

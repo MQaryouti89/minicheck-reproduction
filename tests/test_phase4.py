@@ -41,6 +41,7 @@ def fake_results(root, seed=0):
 
 @pytest.fixture()
 def env(tmp_path, monkeypatch):
+    """Fixture: synthetic prediction files in a temporary folder, with phase4 paths and a smaller bootstrap."""
     res, out = tmp_path / "res", tmp_path / "phase4"
     fake_results(res)
     monkeypatch.setattr(phase4, "RESULTS", res)
@@ -54,6 +55,7 @@ def env(tmp_path, monkeypatch):
 
 
 def test_cascade_endpoints_and_cost(env):
+    """delta = 0 reproduces RoBERTa; the largest delta reproduces Flan-T5 at the summed cost."""
     D = phase4.load("dev")
     pred, cost, d = phase4.cascade(D, 0.0)
     assert not d.any() and (pred == D.pred_R.values).all() and np.allclose(cost, D.lat_R.values)
@@ -62,6 +64,7 @@ def test_cascade_endpoints_and_cost(env):
 
 
 def test_macro_bacc_matches_sklearn(env):
+    """Our macro BAcc equals the mean of scikit-learn's per-dataset balanced accuracy."""
     D = phase4.load("test")
     ours, per = phase4.macro_bacc(D, D.pred_D.values)
     ref = [100 * balanced_accuracy_score(D.label[D.dataset == d], D.pred_D[D.dataset == d]) for d in phase4.DATASETS]
@@ -69,6 +72,9 @@ def test_macro_bacc_matches_sklearn(env):
 
 
 def test_bootstrap_paired_and_expected_correctness(env):
+    """Bootstrap replicates are paired across approaches, and random
+    deferral keeps per-dataset counts and has the expected mean.
+    """
     D = phase4.load("test")
     c = (D.pred_R == D.label).values.astype(float)
     boot, tot = phase4.bootstrap(D, {"a": c, "b": c}, {"a": D.lat_R.values}, replicates=200, seed=1)
@@ -90,6 +96,7 @@ def test_bootstrap_paired_and_expected_correctness(env):
 
 
 def test_load_refuses_misaligned_labels(env):
+    """Loading stops if two models disagree on a claim's gold label."""
     res, _ = env
     f = res / "flan-t5-large" / "dev" / "Wice.csv"
     df = pd.read_csv(f)
@@ -100,6 +107,7 @@ def test_load_refuses_misaligned_labels(env):
 
 
 def test_select_freezes_then_evaluate_reads_it(env):
+    """select applies the primary rule and freezes delta, refuses to re-select, and evaluate reads it."""
     _, out = env
     args = type("A", (), {"overwrite": False})()
     phase4.select(args)
@@ -125,6 +133,7 @@ def test_select_freezes_then_evaluate_reads_it(env):
 
 
 def test_measured_matches_simulation_when_run_equals_it(env):
+    """A measured run identical to the simulation is reported as an exact match."""
     res, out = env
     args = type("A", (), {"overwrite": False, "results": res})()
     phase4.select(args)

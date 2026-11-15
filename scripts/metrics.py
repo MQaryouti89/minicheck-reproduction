@@ -29,6 +29,9 @@ META_KEYS = ["inference_seconds", "latency_ms_mean", "latency_ms_median", "laten
 
 
 def scores(df):
+    """Metrics for one set of predictions (in %): BAcc, precision/recall/F1 for both classes, macro F1,
+    and the confusion counts.
+    """
     y, p = df.label.astype(int), df.pred.astype(int)
     tn, fp, fn, tp = confusion_matrix(y, p, labels=[0, 1]).ravel()
     pr, rc, f1, _ = precision_recall_fscore_support(y, p, labels=[0, 1], zero_division=0)
@@ -54,6 +57,9 @@ def load_run(split_dir):
 
 
 def main():
+    """Compute per-dataset and summary metrics for every model and split in a results folder, compare
+    test BAcc with the original Table 2, and (with --legacy) compare the laptop RoBERTa run with the T4.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("results", type=Path)
     ap.add_argument("--legacy", type=Path, help="laptop RoBERTa preds CSV (from minicheck_eval.py) to compare against")

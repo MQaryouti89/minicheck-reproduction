@@ -217,6 +217,7 @@ if "smoke" in STAGES:
 
 
 def model_cell(n, model, title):
+    """Add the notebook cells for one checker stage: a heading and a cell that runs run_checker.py."""
     md(f"## {n}. {title}")
     code(f'''
 if "{model}" in STAGES:

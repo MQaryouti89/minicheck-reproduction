@@ -24,11 +24,13 @@ import phase4  # noqa: E402
     ("Notable people attended.", False, False, False),  # 'not' inside a word is not a negation
 ])
 def test_claim_features(claim, numeric, negation, complex_):
+    """The claim-type word rules give the expected flags on hand-written claims."""
     f = ea.claim_features(claim)
     assert (f["numeric"], f["negation"], f["complex"]) == (numeric, negation, complex_)
 
 
 def synthetic(n_per=30, seed=0):
+    """Synthetic predictions and claim texts shaped like the real files (no gated data)."""
     rng = np.random.default_rng(seed)
     rows, texts = [], []
     k = 0
@@ -50,6 +52,7 @@ def synthetic(n_per=30, seed=0):
 
 
 def test_text_outputs_contain_no_text(tmp_path, monkeypatch):
+    """Claim-type outputs written to results/ contain no claim or document text."""
     monkeypatch.setattr(ea, "OUT", tmp_path / "phase5")
     monkeypatch.setattr(ea, "PRIVATE", tmp_path / "private")
     monkeypatch.setattr(ea, "REPS", 50)
@@ -68,6 +71,7 @@ def test_text_outputs_contain_no_text(tmp_path, monkeypatch):
 
 
 def test_text_must_match_predictions():
+    """Text analyses stop if the text file's labels do not match the predictions."""
     D, T = synthetic()
     T.loc[T.index[0], "label"] = 1 - T.loc[T.index[0], "label"]
     pred_c, _, d = phase4.cascade(D, 0.19)
@@ -76,6 +80,7 @@ def test_text_must_match_predictions():
 
 
 def test_within_dataset_and_short_documents():
+    """Within-dataset comparisons and the short-document check handle normal and empty cases."""
     D, T = synthetic(n_per=60)
     pred_c, _, d = phase4.cascade(D, 0.19)
     F = pd.DataFrame([ea.claim_features(c) for c in T.claim], index=D.index)

@@ -267,7 +267,7 @@ Each chunk is still scored separately, so only padding differs. A test with all 
 
 None of them is in a dataset that differs from the paper.
 
-**Provenance of the RoBERTa predictions.** They come from Kaggle version 1, which ran `run_checker.py` `326d9892…`, the code before the OOM fallback was added. DeBERTa and Flan-T5 come from version 4 (`412f0d4c…`).
+**Provenance of the RoBERTa predictions.** They come from Kaggle version 1, which ran `run_checker.py` `326d9892…`, the code before the OOM fallback was added. DeBERTa and Flan-T5 come from version 4 (`412f0d4c…`). Function docstrings were added to all scripts after every run had finished; they change the file hashes but not the code, and `git show 1806e81:scripts/run_checker.py` gives the exact file that the recorded hash refers to.
 - The scoring path is identical; the fallback only changes chunk batching after an OOM, which RoBERTa never hit.
 - Version 1's original output, with its `code_version.json`, is kept in `results/kaggle-t4/_minicheck_results/`.
 - Its RoBERTa predictions are byte-identical to those in `minicheck_results/`.
@@ -293,6 +293,9 @@ scripts/
   build_notebook.py              generates notebooks/minicheck_kaggle.ipynb
   error_analysis.py              CPU only: Phase 5 error analysis (+ claim types/examples with --with-text)
   final_results.py               CPU only: final tables T1-T9, figures 1-10, 32 consistency checks, file manifest
+  unrounded_ci.py                CPU only: unrounded BAcc and CIs for T3 (read-only re-run of the test evaluation)
+  report_figures.py              CPU only: the report's data figures at print size (results/final/report_figures/)
+  cascade_diagram.py             CPU only: the report's cascade diagram (Fig. 1), values read from saved results
 tests/
   test_phase4.py                 6 tests: cascade rule, BAcc, paired bootstrap, freezing, measured vs simulated
   test_error_analysis.py         13 tests: claim-type rules, within-dataset and short-document checks, no gated text in outputs, id/label matching
@@ -371,6 +374,39 @@ python -m pytest tests -q            # 19 tests
 Because the checkers are deterministic, a rerun should give the same predictions. Ours were identical between a laptop RTX 5070 Ti and the T4.
 
 **Original laptop script** (kept for the existing RoBERTa result): `python scripts/minicheck_eval.py roberta-large results/ [--limit 5]`.
+
+## Reproducing each report table and figure
+
+Run from the repository root. The GPU stages (per-claim predictions) run on Kaggle; everything below them runs on a CPU from the saved predictions, without the gated text unless noted.
+
+| Report item | Saved file | Command |
+|---|---|---|
+| Per-claim predictions (all tables) | `results/kaggle-t4/minicheck_results/<model>/<split>/*.csv` | `python scripts/run_checker.py <model> --splits dev test --out results/kaggle-t4` (GPU) |
+| Measured cascade run (Table 4) | `results/kaggle-t4-cascade/minicheck_results/cascade/test/*.csv` | `python scripts/run_cascade.py --out results/kaggle-t4-cascade/minicheck_results` (GPU) |
+| Per-dataset metrics | `results/kaggle-t4/minicheck_results/metrics/` | `python scripts/metrics.py results/kaggle-t4/minicheck_results --legacy results/roberta-large/roberta-large_preds.csv` |
+| Table 1: test BAcc vs the original Table 2 | `results/final/T1_reproduction_vs_paper.csv` | `python scripts/final_results.py` |
+| Table 2: cost per checker | `results/final/T2_baselines_dev_test_cost.csv` | `python scripts/final_results.py` |
+| Table 3: all approaches, test | `results/phase4/test_summary.csv`, `results/final/T3_all_approaches_test.csv`, `T3_unrounded.csv` | `python scripts/phase4.py evaluate`, then `python scripts/final_results.py` and `python scripts/unrounded_ci.py` |
+| Table 4: simulated vs measured | `results/phase4/measured_vs_simulated.json`, `results/final/T5_simulated_vs_measured.csv` | `python scripts/phase4.py measured --results results/kaggle-t4-cascade/minicheck_results`, then `python scripts/final_results.py` |
+| Table 5: failure examples (ids and probabilities) | `results/phase5/examples_idx.csv` | `python scripts/error_analysis.py --with-text` (needs the gated test file) |
+| Table A1: pinned versions and settings | `configs/experiment.json`, `configs/phase4.json` | read by every script |
+| Table B1: precision, recall, F1 | `results/final/T6_precision_recall_f1_test.csv` | `python scripts/final_results.py` |
+| Table C1: claim types within datasets | `results/final/T9_claim_types_within_dataset.csv` | `python scripts/error_analysis.py --with-text`, then `python scripts/final_results.py` |
+| Threshold selection (Fig. 3) | `results/phase4/selected_thresholds.json`, `dev_delta_curve.csv` | `python scripts/phase4.py select` (refuses to run again once δ is frozen) |
+| Fig. 1: cascade diagram | `results/final/report_figures/fig_cascade_diagram.png` | `python scripts/cascade_diagram.py` |
+| Figs. 2–10 | `results/final/report_figures/*.png` | `python scripts/report_figures.py` |
+
+`python scripts/final_results.py` also re-runs the 32 consistency checks and exits with an error if any saved number differs from the value recomputed from the per-claim predictions.
+
+## Advice for future reproducers
+
+- **Pin the benchmark revision and check the counts.** LLM-AggreFact is gated and has grown since publication. Accept its terms, pin a revision, keep the ten original datasets and check the claim counts (dev 15,080, test 12,949) before scoring; `run_checker.py` does this on every run.
+- **Expect memory limits on a 16 GB GPU.** A few documents contain one very long "sentence" that becomes a chunk of up to 2,048 tokens; at batch size 16 these exceed a T4's memory for DeBERTa and Flan-T5. Score such claims with smaller chunk batches (as `run_checker.py` does) and record which claims needed it.
+- **Plan around session limits.** Run one model per Kaggle session, use `--stop-after-min` so progress is saved before the 12-hour limit, and attach the previous version's output so finished datasets are skipped. Long full-power runs on a laptop GPU are risky: ours shut down twice under sustained load.
+- **Compare like with like.** Average per-dataset BAcc without weights, keep the 0.5 threshold, and compare with the per-dataset rows of the original Table 2 rather than its printed averages (the RoBERTa average is inconsistent with its row).
+- **Freeze before testing.** Choose any threshold on the development split, freeze it in a file and check its hash before the test split is scored; `phase4.py` refuses to re-select once δ is frozen.
+- **Time systems in the same session.** Speed differs by up to about 10% between Kaggle sessions, so speed-ups that combine sessions carry that uncertainty.
+- **Keep gated text out of public files.** Store predictions by claim id only; `tests/test_error_analysis.py` checks that no claim or document text reaches the results folder.
 
 ## Data, privacy and credentials
 

@@ -39,6 +39,7 @@ FLUSH_EVERY = 200
 
 
 def parse_args():
+    """Parse the command line: split, output folder, frozen-threshold file, limit, folders, time limit."""
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--split", default="test", choices=["dev", "test"])
     p.add_argument("--out", required=True, type=Path, help="results root; writes <out>/cascade/")
@@ -52,6 +53,9 @@ def parse_args():
 
 
 def main():
+    """Run the frozen cascade end to end: score each claim with RoBERTa, rescore it with Flan-T5 when
+    |p - 0.5| < delta, and save per-claim results, stage latencies and peak GPU memory.
+    """
     args = parse_args()
     os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
     import numpy as np
@@ -150,6 +154,7 @@ def main():
         rows, t_ds = [], time.time()
 
         def flush():
+            """Append buffered rows to the partial CSV and save fallback and GPU-memory state, so a run can resume."""
             nonlocal rows
             if rows:
                 pd.DataFrame(rows, columns=COLUMNS).to_csv(part, mode="a", header=not part.exists(), index=False)

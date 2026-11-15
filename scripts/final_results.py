@@ -31,10 +31,12 @@ checks = []
 
 
 def check(name, ok, detail=""):
+    """Record one consistency check (name, PASS/FAIL, detail) for consistency_check.md."""
     checks.append({"check": name, "result": "PASS" if ok else "FAIL", "detail": detail})
 
 
 def fig_setup(w=7.5, h=4.2):
+    """Create a figure and axes in the shared style (white background, light spines, small ticks)."""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -53,6 +55,9 @@ MODEL_COL = {"roberta-large": COL["cascade"], "deberta-v3-large": COL["random"],
 
 
 def main():
+    """Recompute the key numbers from the per-claim predictions, write tables T1-T9 and figures to
+    results/final/, run the consistency checks and write the SHA-256 manifest.
+    """
     OUT.mkdir(parents=True, exist_ok=True)
     tables = {}
     per = pd.read_csv(R3 / "metrics" / "per_dataset.csv")

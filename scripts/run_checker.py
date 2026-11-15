@@ -30,6 +30,7 @@ FLUSH_EVERY = 200  # rows appended to <dataset>.part.csv at a time
 
 
 def parse_args():
+    """Parse the command line: model, splits, output folder, smoke-test limit, folders and time limit."""
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("model", choices=list(CFG["models"]))
     p.add_argument("--splits", nargs="+", default=["dev", "test"], choices=["dev", "test"])
@@ -46,6 +47,9 @@ def parse_args():
 
 # ---------------------------------------------------------------- data and model
 def load_split(split, data_dir, limit):
+    """Load one split of the pinned LLM-AggreFact revision, add the stable claim id `idx`
+    ('<split>-<row number>') and keep the ten datasets of the original study.
+    """
     import pandas as pd
     if data_dir:
         path = Path(data_dir) / f"{split}.parquet"
@@ -106,9 +110,11 @@ def load_scorer(model, models_dir):
 
 # ---------------------------------------------------------------- environment
 def environment():
+    """Record the software and hardware environment (package versions, MiniCheck commit, GPU)."""
     from importlib import metadata
     import torch
     def ver(pkg):
+        """Installed version of `pkg`, or None if it is not installed."""
         try:
             return metadata.version(pkg)
         except metadata.PackageNotFoundError:
@@ -129,6 +135,9 @@ def environment():
 
 
 def check_environment(env, allow_cpu):
+    """Stop early if the installed MiniCheck commit differs from the pinned one, if no GPU is
+    visible (unless --allow-cpu), or if more than one GPU is visible.
+    """
     if env["minicheck_commit"] not in (None, CFG["minicheck_commit"]):
         sys.exit(f"minicheck is installed from commit {env['minicheck_commit']}, expected {CFG['minicheck_commit']}")
     if env["minicheck_commit"] is None:
@@ -142,6 +151,10 @@ def check_environment(env, allow_cpu):
 
 # ---------------------------------------------------------------- scoring
 def main():
+    """Score one checker on the requested splits, one dataset at a time, saving per-claim probability,
+    prediction, chunk count and latency; resumes from partial files and records GPU memory and
+    batch fallbacks.
+    """
     args = parse_args()
     # Less fragmentation of GPU memory; affects only allocation, not results
     os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
@@ -249,6 +262,7 @@ def main():
         rows, t_ds = [], time.time()
 
         def flush():
+            """Append buffered rows to the partial CSV and save fallback and GPU-memory state, so a run can resume."""
             nonlocal rows
             if rows:
                 pd.DataFrame(rows, columns=COLUMNS).to_csv(part, mode="a", header=not part.exists(), index=False)
