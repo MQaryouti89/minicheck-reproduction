@@ -8,7 +8,7 @@ Last updated: 2026-11-15
 | 2. Kaggle preparation | **Done** |
 | 3. Reproduce the three models | **Done.** All three reproduce the paper on one Kaggle T4 (test averages within 0.03) |
 | 4. Adaptive cascade | **Done, reviewed and approved.** Pre-registered verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
-| 5. Error analysis, reproducibility, final preparation | **Technical work done; report drafted; repository on GitHub.** Pending (student): review of the report, presentation, submission |
+| 5. Error analysis, reproducibility, final preparation | **Technical work done; repository published; report drafted.** Pending (student): review of the report, presentation, submission |
 
 ## 25-step tracker
 
@@ -36,7 +36,7 @@ Last updated: 2026-11-15
 | 20 | 4 | End-to-end Kaggle run (version 6) and measured vs simulated | Done |
 | 21 | 5 | Final error analysis (FP/FN, agreement, confident errors, datasets, length/cost, claim types, examples) | Done |
 | 22 | 5 | Final tables, figures and consistency check (32/32 PASS) | Done |
-| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Pushed to the public GitHub repository `MQaryouti89/minicheck-reproduction` (2026-11-15) |
+| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Published (public): https://github.com/MQaryouti89/minicheck-reproduction; a fresh clone passes 19/19 tests, 32/32 checks and the 242-file manifest |
 | 24 | 5 | Literature: 16 verified references, relevance notes, five suggested papers | Done |
 | 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report drafted (`../Report/AI504_Assignment2_MiniCheck_Report.docx`, not in the repository), awaiting the student's review; presentation not started |
 

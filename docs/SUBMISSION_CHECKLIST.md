@@ -29,7 +29,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
 
 ## C. GitHub repository (do before submitting)
 
-1. [x] Repository created: https://github.com/MQaryouti89/minicheck-reproduction. It is **public**, so the link in the report opens for the marker. (If it is made private later, add the instructor as a collaborator.)
+1. [x] Repository published and **public**: https://github.com/MQaryouti89/minicheck-reproduction (verified from a fresh clone: 19/19 tests, 32/32 checks, all 242 result files match the manifest; no `private/`, tokens or dataset text).
 2. [x] In the project folder:
    ```bash
    git init
