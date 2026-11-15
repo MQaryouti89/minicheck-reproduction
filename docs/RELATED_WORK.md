@@ -58,7 +58,7 @@ The MiniCheck paper itself should be included in addition to these five.
 ## Novelty statement
 
 Confidence-based cascades and selective prediction are established techniques (Section 3). This project's own contribution is an **evaluation**, not a new method. We apply a standard confidence cascade to MiniCheck's released checkers with:
-- a pre-registered selection rule and success criteria
+- a prespecified selection rule and success criteria
 - thresholds chosen on dev only
 - paired bootstrap CIs
 - a random-deferral control

@@ -7,7 +7,7 @@ Last updated: 2026-11-15
 | 1. Review and verification | **Done** |
 | 2. Kaggle preparation | **Done** |
 | 3. Reproduce the three models | **Done.** All three reproduce the paper on one Kaggle T4 (test averages within 0.03) |
-| 4. Adaptive cascade | **Done, reviewed and approved.** Pre-registered verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
+| 4. Adaptive cascade | **Done, reviewed and approved.** Prespecified verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
 | 5. Error analysis, reproducibility, final preparation | **Technical work done; repository published; report drafted.** Pending (student): review of the report, presentation, submission |
 
 ## 25-step tracker
@@ -29,7 +29,7 @@ Last updated: 2026-11-15
 | 13 | 3 | DeBERTa and Flan-T5, dev + test (version 4) | Done |
 | 14 | 3 | Verify metrics locally; laptop vs T4 check (0 flips) | Done |
 | 15 | 3 | Final three-model comparison with Table 2 | Done |
-| 16 | 4 | Input checks and pre-registered plan (`configs/phase4.json`) | Done |
+| 16 | 4 | Input checks and prespecified plan (`configs/phase4.json`) | Done |
 | 17 | 4 | Dev analysis; δ frozen (0.19 / 0.41) | Done |
 | 18 | 4 | One test evaluation: all comparisons, metrics, bootstrap CIs | Done |
 | 19 | 4 | Cascade error analysis | Done |
@@ -37,8 +37,8 @@ Last updated: 2026-11-15
 | 21 | 5 | Final error analysis (FP/FN, agreement, confident errors, datasets, length/cost, claim types, examples) | Done |
 | 22 | 5 | Final tables, figures and consistency check (32/32 PASS) | Done |
 | 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Published (public): https://github.com/MQaryouti89/minicheck-reproduction; a fresh clone passes 19/19 tests, 32/32 checks and the 242-file manifest |
-| 24 | 5 | Literature: 16 verified references, relevance notes, five suggested papers | Done |
-| 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report drafted (`../Report/AI504_Assignment2_MiniCheck_Report.docx`, not in the repository), awaiting the student's review; presentation not started |
+| 24 | 5 | Literature: 18 verified references, relevance notes, five suggested papers | Done |
+| 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report revised after the student's review (`../Report/AI504_Assignment2_MiniCheck_Report.docx` and `.pdf`, not in the repository), corrections approved; separate AI-use section removed at the student's request (record kept in docs/AI_USE.md); awaiting the student's final review; presentation not started |
 
 ## Phase 1: Review and verification
 
@@ -151,11 +151,11 @@ Question: can RoBERTa first, with only uncertain claims sent to Flan-T5, (1) bea
   - secondary δ = **0.41**: dev BAcc 73.40, 38.9% deferred, 0.90 of Flan-T5's time
 - [x] Frozen in `results/phase4/selected_thresholds.json` (SHA-256 `ce2102326bc8c686…`), together with the hashes of the plan and the dev inputs. The script refuses to select again once a frozen file or test results exist.
 
-**Step 4: test evaluation, scored once.** Done (`python scripts/phase4.py evaluate`):
+**Step 4: test evaluation (δ read only from the frozen file).** Done (`python scripts/phase4.py evaluate`):
 - [x] All approaches, all agreed metrics, paired bootstrap CIs, random deferral (1,000 draws), oracle. Outputs:
   - `results/phase4/results_test.md`, `test_summary.csv`, `test_per_dataset.csv`, `test_statistics.json`
   - `error_*.csv`, `fig_test_vs_flan.png`, `fig_test_tradeoff.png`
-- [x] **Pre-registered verdict: negative.**
+- [x] **Prespecified verdict: negative.**
   - Primary cascade: 74.51, −0.21 vs Flan-T5 (CI [−1.22, +0.82]), 1.57× faster (simulated).
   - Not better than Flan-T5. Non-inferiority at −0.5 is not shown, because the CI lower bound is −1.22.
 - [x] Secondary cascade: −0.04 [−0.68, +0.59], 1.09× faster. Also neither outcome.
@@ -166,6 +166,7 @@ Question: can RoBERTa first, with only uncertain claims sent to Flan-T5, (1) bea
 - Process notes, for transparency:
   - A first version of the tests read the real Phase 3 files, because of a default-argument bug in `load()`. Nothing was printed, and the test stopped before writing anything, so no cascade or threshold result was seen. Fixed before the dev analysis.
   - `evaluate` was run three times to fix the figures and report formatting. Every number file is byte-identical across the runs (checked with `cmp`).
+  - A fourth, read-only execution (`scripts/unrounded_ci.py`, 2026-11-15) repeated the evaluation into a temporary folder to obtain unrounded CI bounds for two-decimal reporting. Its number files are byte-identical to `results/phase4/` (checked with `filecmp`), and nothing in `results/phase4/` was modified. This was a reporting and verification step; the methodology and results did not change.
 
 **Step 5: end-to-end Kaggle run.** Done 2026-11-15:
 - [x] `scripts/run_cascade.py` and notebook stage `"cascade"` (cell 11), tested locally on CPU with tiny models first.
@@ -244,7 +245,7 @@ Also done in Phase 4:
 - [x] Pushed to https://github.com/MQaryouti89/minicheck-reproduction (public). Checked on 2026-11-15 on a fresh clone: `private/` is absent, no tokens or dataset text, all files in `results/final/manifest_sha256.txt` match, 19/19 tests and 32/32 consistency checks pass, and regenerating the final tables and figures changes no file.
 
 **Step 24: literature.**
-- [x] 16 references checked against the ACL Anthology and publisher pages. BibTeX in `docs/references.bib`; relevance notes, the five suggested papers and a novelty statement in `docs/RELATED_WORK.md`. The novelty statement says the cascade is not a new method; the contribution is the evaluation.
+- [x] 16 references checked against the ACL Anthology and publisher pages (18 after the report revision added the Reveal and ExpertQA source papers, also checked on the Anthology). BibTeX in `docs/references.bib`; relevance notes, the five suggested papers and a novelty statement in `docs/RELATED_WORK.md`. The novelty statement says the cascade is not a new method; the contribution is the evaluation.
 
 **Step 25: submission preparation.**
 - [x] `docs/SUBMISSION_CHECKLIST.md`:
@@ -257,3 +258,8 @@ Also done in Phase 4:
   - inconsistencies in the brief to ask the instructor about (20% vs 40% weight, 4 pages vs 4,000–5,000 words)
 - [x] `docs/AI_USE.md`. The brief's text forbids GenAI unless approved, so cite the instructor's approval.
 - [ ] Student: write the report and slides, put the five papers in the shared folder, name the folder `<Student ID>-<First Name>`.
+- [x] **Report revision (2026-11-15), after the student's review.** No experiment, threshold, setting or result changed.
+  - `scripts/unrounded_ci.py` → `results/final/T3_unrounded.csv`. T3 stores CI bounds at 3 decimals, and rounding them again can differ from the exact value: the random-deferral lower bound is stored as −2.365 but is −2.36497 (−2.36, as in the original Figure 4; Python rounds the stored −2.365 to −2.37). The script repeats `phase4.py evaluate` in memory into a temporary folder (same frozen file, configuration and seeds), checks that `test_summary.csv`, `test_per_dataset.csv`, `test_statistics.json` and `test_delta_curve_after_freezing.csv` are byte-identical to `results/phase4/`, and saves only the unrounded values. results/phase4 is not modified. This is a fourth, read-only execution of the evaluation code, used for rounding only.
+  - `scripts/report_figures.py` → `results/final/report_figures/`: the report's figures redrawn at print size (16 cm, 9–10 pt text) from saved result files only; Table 3/Figure 2 labels use the unrounded values.
+  - Dataset terms rechecked: LLM-AggreFact and its Reveal subset are CC BY-ND 4.0, evaluation only; Reveal asks that no part be redistributed without protection against web crawlers. The report now describes the failure examples instead of quoting claim text, and cites the Reveal and ExpertQA source papers (18 references).
+  - Wording: "prespecified" instead of "prespecified" (no formal preregistration was made).

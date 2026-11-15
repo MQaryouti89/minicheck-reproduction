@@ -14,7 +14,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
   - [ ] presentation slides
   - [ ] **five significant papers** cited in the report (PDFs); suggested five in [RELATED_WORK.md](RELATED_WORK.md), plus the MiniCheck paper
 - [ ] **Presentation:** Week 11, on the day of the lecture
-- [ ] **AI-use statement** in the report, with the instructor's approval cited ([AI_USE.md](AI_USE.md)). The brief's text forbids GenAI unless approved
+- [x] **AI use.** The instructor approved AI use, and the brief does not require a declaration, so at the student's request the report has no AI-use section; [AI_USE.md](AI_USE.md) is the record. Keep the written approval. The brief's text forbids GenAI unless approved
 - [ ] Ask the instructor about inconsistencies in the brief:
   - weight: "20% of overall grade" on page 1 vs "40%" in the rubric
   - length: 4 pages vs 4,000–5,000 words
@@ -23,9 +23,9 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
 
 | Criterion (weight) | 75 (Very good) | 100 (Outstanding) | Our evidence |
 |---|---|---|---|
-| Interpretation (20%) | Correct research and design methodologies | Excellent demonstration of research and design methodologies | Pre-registered plan (`configs/phase4.json`), dev/test separation, frozen δ with hash, controls, paired bootstrap, measured vs simulated |
+| Interpretation (20%) | Correct research and design methodologies | Excellent demonstration of research and design methodologies | Prespecified plan (`configs/phase4.json`), dev/test separation, frozen δ with hash, controls, paired bootstrap, measured vs simulated |
 | Project code (30%) | Anyone can use the repository to easily reproduce the results | Anyone can easily reproduce everything; well-annotated code, README files and scripts to aid reproduction, comments on best practices and findings | Pinned versions, one Kaggle notebook, resumable runners, 19 unit tests, 32-check consistency checker, README run instructions |
-| Report (50%) | Good literature review; **at least one original contribution** to reproduce the work and/or go beyond the original results, **or error analysis**; well structured; results close to published | Very good literature discussion; goes above and beyond in analysis; effective tables and figures; results very good | Reproduction within 0.03 of the paper; 72.7 discrepancy found; cascade study with an honest negative result; error analysis; 16 verified references |
+| Report (50%) | Good literature review; **at least one original contribution** to reproduce the work and/or go beyond the original results, **or error analysis**; well structured; results close to published | Very good literature discussion; goes above and beyond in analysis; effective tables and figures; results very good | Reproduction within 0.03 of the paper; 72.7 discrepancy found; cascade study with an honest negative result; error analysis; 18 verified references |
 
 ## C. GitHub repository (do before submitting)
 
@@ -66,7 +66,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
   - 26 of 30 dataset scores match after rounding; each of the other 4 is the size of 1–2 changed predictions.
   - Laptop and T4 give identical RoBERTa predictions.
 - [ ] **What was found about the paper.** The printed RoBERTa average (72.7) does not equal the mean of its own row (73.12), unlike every other row. The benchmark is gated, and it has grown since the paper (RAGTruth etc.); the paper's 10 datasets were kept.
-- [ ] **What was independently investigated.** The adaptive cascade (Phase 4), with a pre-registered plan.
+- [ ] **What was independently investigated.** The adaptive cascade (Phase 4), with a prespecified plan.
 - [ ] **What was achieved.**
   - The measured speed-up is 1.47×.
   - The cascade beats RoBERTa (+1.37) and random deferral (+1.12).
@@ -130,7 +130,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
 - [ ] **Reproduction setup:** released checkpoints, pinned versions, one T4.
 - [ ] **Reproduction result:** `fig1_reproduction_vs_paper.png` and table T1. Mention the 72.7 discrepancy.
 - [ ] **Extension idea:** a cascade with a confidence gate (`fig7_confidence_bins.png`).
-- [ ] **Method rigour:** the pre-registered plan, dev-only δ (`fig6_dev_delta_selection.png`), the frozen hash, controls.
+- [ ] **Method rigour:** the prespecified plan, dev-only δ (`fig6_dev_delta_selection.png`), the frozen hash, controls.
 - [ ] **Result:** `fig3_accuracy_vs_cost.png` and `fig4_difference_vs_flan_ci.png`. State the negative verdict plainly.
 - [ ] **Measured vs simulated:** `fig5_simulated_vs_measured.png`.
 - [ ] **Error analysis:** `fig8_error_categories.png`, `fig9_length_cost.png`, `fig10_claim_types.png`, and 1–2 short examples (quote or paraphrase within the dataset terms).

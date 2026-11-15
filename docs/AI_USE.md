@@ -1,6 +1,6 @@
 # Use of generative AI in this project
 
-**Context.** The assignment brief (V2) says: *"Generative AI should not be used for creation of the assignment and achieving the contribution."* The student reports that the instructor approved full AI use for all students in this course run. **Keep the written approval (email or announcement) and cite it in the report.** This file records what the AI assistant did, so the use is transparent.
+**Context.** The assignment brief (V2) says: *"Generative AI should not be used for creation of the assignment and achieving the contribution."* The student reports that the instructor approved full AI use for all students in this course run. **Keep the written approval (email or announcement).** The brief does not require an AI-use declaration, and at the student's request the report has no AI-use section; this file is the record of what the AI assistant did, so the use stays transparent.
 
 **Assistant.** Claude, an AI model by Anthropic, used through Claude Code in VS Code, in sessions of 14–15 November 2026.
 
@@ -17,10 +17,10 @@
 ## What the student did
 
 - Chose the paper and the research direction (adaptive cascade).
-- Reviewed and approved each phase, including the four pre-registered Phase 4 choices: −0.5 margin, 1.25× speed-up target, a single symmetric δ, and majority vote. These were approved before the dev analysis.
+- Reviewed and approved each phase, including the four prespecified Phase 4 choices: −0.5 margin, 1.25× speed-up target, a single symmetric δ, and majority vote. These were approved before the dev analysis.
 - Ran every Kaggle job: the smoke test and versions 1–6. Managed Kaggle settings, secrets, inputs and uploads.
-- Reviewed the Phase 3 and Phase 4 results and decided to keep the pre-registered methodology and report the negative outcome.
-- **Writes the final report and presentation and is responsible for them.** The AI did not write report or slide text.
+- Reviewed the Phase 3 and Phase 4 results and decided to keep the prespecified methodology and report the negative outcome.
+- **Is responsible for the final report and presentation.** With the instructor's approval, the AI drafted the report text and revised it after the student's review; the student reviewed the full report, requested the corrections, and approves the final version. The presentation has not been prepared yet.
 
 ## Safeguards against AI error
 
@@ -30,6 +30,7 @@
 - **Problems are recorded rather than hidden** (PROGRESS.md):
   - a test bug that briefly read real files
   - three formatting re-runs of the test evaluation, with numbers byte-identical
+  - a fourth, read-only re-run (`scripts/unrounded_ci.py`, into a temporary folder) to obtain unrounded CI bounds for 2-decimal reporting; all number files were byte-identical, and results/phase4 was not modified
   - the expected OOM fallbacks that did not happen
 - **Suggested student checks before submission.** Re-derive two or three numbers by hand from the CSV files, for example:
   - one per-dataset BAcc

@@ -14,7 +14,7 @@ This repository has two goals:
 | Issue found in the paper | Table 2 prints 72.7 as RoBERTa's average, but its own row averages 73.12 (all other rows check out) |
 | Cascade (δ 0.19, frozen on dev) | 74.51 vs Flan-T5 74.71: **−0.21 [−1.22, +0.82]**; 13.6% of claims sent to Flan-T5 |
 | Measured on the T4 | **1.47× faster** than Flan-T5 (3,380 s vs 4,954 s); 12,949 / 12,949 predictions identical to the simulation; peak GPU memory 13.3 GiB; no OOM |
-| Pre-registered verdict | **Negative.** The speed target was met, but non-inferiority (−0.5 margin) was not shown. Better than RoBERTa (+1.37) and than random deferral (+1.12) |
+| Prespecified verdict | **Negative.** The speed target was met, but non-inferiority (−0.5 margin) was not shown. Better than RoBERTa (+1.37) and than random deferral (+1.12) |
 | Main error-analysis findings | 78% of RoBERTa's errors are confident, so a confidence gate cannot reach them. Complex claims are where RoBERTa is weak and Flan-T5 helps (+3.1 vs +0.3 points within datasets) |
 
 - **Final tables and figures:** [results/final/](results/final/README.md).
@@ -104,7 +104,7 @@ Every dataset except ClaimVerify matches the paper after rounding to one decimal
 - **Selecting δ, on dev only.** Primary δ: the smallest δ whose dev macro BAcc is at least Flan-T5's dev BAcc. Secondary δ: the δ with the best dev BAcc.
   - Result: **primary δ = 0.19**, **secondary δ = 0.41**.
   - Frozen in [results/phase4/selected_thresholds.json](results/phase4/selected_thresholds.json) (SHA-256 `ce2102326bc8c686…`).
-- **Test.** The test split was scored once, with δ read only from that file.
+- **Test.** δ is read only from that file. The single-model test results were already known from Phase 3; only the cascade settings were chosen without test data. The test evaluation code was executed four times with the same frozen file, configuration and seeds: `phase4.py evaluate` three times to fix figures and formatting, and `scripts/unrounded_ci.py` once, read-only into a temporary folder, to obtain unrounded CI bounds for the report. All four produced byte-identical number files (PROGRESS.md, Phase 4 step 4).
 - **Cost.** Each claim costs its measured Phase 3 RoBERTa latency, plus its Flan-T5 latency if deferred. So the times are **simulated**, not measured end to end.
 - **Statistics.** CIs come from a paired bootstrap: 10,000 resamples within datasets, seed 504.
 
@@ -121,7 +121,7 @@ Every dataset except ClaimVerify matches the paper after rounding to one decimal
 | Random deferral, same count per dataset (1,000 draws) | 73.39 [72.32, 74.48] | −1.32 [−2.36, −0.27] | 13.6 | 237 | 3,066 | 1.62× |
 | Oracle deferral (upper bound, reference only) | 83.19 | +8.47 | 10.1 | 225 | 2,907 | 1.70× |
 
-**Verdict under the pre-registered criteria: negative.**
+**Verdict under the prespecified criteria: negative.**
 - **Outcome 1 (better than Flan-T5): not met.** The CI of (cascade − Flan-T5) includes 0.
 - **Outcome 2 (comparable and faster): not met.** The 1.57× speed-up passes the 1.25× target. But the CI lower bound is −1.22, below the −0.5 margin, so non-inferiority is not shown.
 
@@ -173,7 +173,7 @@ The frozen cascade (δ 0.19) was run once on the 12,949 test claims (Kaggle note
   - Flan-T5's stage matched its Phase 3 times.
   - Keeping both models loaded added no measurable overhead.
 - **Memory.** No out-of-memory fallback was needed. The memory pressure expected in the plan did not occur, because the claims behind Flan-T5's highest memory peaks were not deferred.
-- **Verdict unchanged.** The measured 1.47× still meets the ≥ 1.25× target. Non-inferiority is still not shown, because the accuracy is identical to the simulation. So the pre-registered result stays **negative**.
+- **Verdict unchanged.** The measured 1.47× still meets the ≥ 1.25× target. Non-inferiority is still not shown, because the accuracy is identical to the simulation. So the prespecified result stays **negative**.
 - **Caveat.** The speed-up compares this session with Flan-T5's Phase 3 session, so it carries the same session-to-session variation (about ±10% here).
 
 ## Phase 5: error analysis (test split)
@@ -301,7 +301,7 @@ tests/
 notebooks/
   minicheck_kaggle.ipynb         one notebook: smoke test, RoBERTa, DeBERTa, Flan-T5, cascade, comparison
 docs/
-  RELATED_WORK.md, references.bib    16 verified references and their relevance
+  RELATED_WORK.md, references.bib    18 verified references and their relevance
   SUBMISSION_CHECKLIST.md        brief + rubric checklist, report/presentation evidence map
   AI_USE.md                      what the AI assistant did and what the student did
 results/
