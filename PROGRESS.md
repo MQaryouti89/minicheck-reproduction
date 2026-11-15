@@ -8,7 +8,7 @@ Last updated: 2026-11-15
 | 2. Kaggle preparation | **Done** |
 | 3. Reproduce the three models | **Done.** All three reproduce the paper on one Kaggle T4 (test averages within 0.03) |
 | 4. Adaptive cascade | **Done, reviewed and approved.** Pre-registered verdict: negative (−0.21 [−1.22, +0.82] vs Flan-T5, measured 1.47× faster) |
-| 5. Error analysis, reproducibility, final preparation | **Technical work done; report drafted.** Pending (student): GitHub push, review of the report, presentation, submission |
+| 5. Error analysis, reproducibility, final preparation | **Technical work done; report drafted; repository on GitHub.** Pending (student): review of the report, presentation, submission |
 
 ## 25-step tracker
 
@@ -36,7 +36,7 @@ Last updated: 2026-11-15
 | 20 | 4 | End-to-end Kaggle run (version 6) and measured vs simulated | Done |
 | 21 | 5 | Final error analysis (FP/FN, agreement, confident errors, datasets, length/cost, claim types, examples) | Done |
 | 22 | 5 | Final tables, figures and consistency check (32/32 PASS) | Done |
-| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Push to the private GitHub repository `MQaryouti89/minicheck-reproduction` pending (student) |
+| 23 | 5 | Repository review: cleanup, `.gitignore`, secrets/text scan, 19 tests, README; local git repository and commits | Done. Pushed to the public GitHub repository `MQaryouti89/minicheck-reproduction` (2026-11-15) |
 | 24 | 5 | Literature: 16 verified references, relevance notes, five suggested papers | Done |
 | 25 | 5 | Submission checklist, AI-use statement, research report | Checklist done; report drafted (`../Report/AI504_Assignment2_MiniCheck_Report.docx`, not in the repository), awaiting the student's review; presentation not started |
 
@@ -241,7 +241,7 @@ Also done in Phase 4:
 - [x] Removed the short example-text fragments that had been quoted in README.md and the checklist. No dataset text remains outside `private/` (checked by search).
 - [x] `.gitattributes` keeps result files byte-exact, and the manifest is written with LF endings.
 - [x] Git dry run on a copy: 290 files staged; `private/` and `.lnk` ignored; no sensitive paths. On a fresh checkout with `core.autocrlf=true`, all 242 result files match the manifest, 19/19 tests pass and 32/32 checks pass.
-- [ ] Student: `git init`, create the GitHub repository and push, then check online that `private/` is absent (`docs/SUBMISSION_CHECKLIST.md` C).
+- [x] Pushed to https://github.com/MQaryouti89/minicheck-reproduction (public). Checked on 2026-11-15 on a fresh clone: `private/` is absent, no tokens or dataset text, all files in `results/final/manifest_sha256.txt` match, 19/19 tests and 32/32 consistency checks pass, and regenerating the final tables and figures changes no file.
 
 **Step 24: literature.**
 - [x] 16 references checked against the ACL Anthology and publisher pages. BibTeX in `docs/references.bib`; relevance notes, the five suggested papers and a novelty statement in `docs/RELATED_WORK.md`. The novelty statement says the cascade is not a new method; the contribution is the evaluation.

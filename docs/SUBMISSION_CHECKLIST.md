@@ -29,8 +29,8 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
 
 ## C. GitHub repository (do before submitting)
 
-1. [ ] Create an empty repository on GitHub. The student chose **private** (`MQaryouti89/minicheck-reproduction`): before submitting, add the instructor as a collaborator (Settings → Collaborators) or make it public, otherwise the link in the report will not open for the marker.
-2. [ ] In the project folder:
+1. [x] Repository created: https://github.com/MQaryouti89/minicheck-reproduction. It is **public**, so the link in the report opens for the marker. (If it is made private later, add the instructor as a collaborator.)
+2. [x] In the project folder:
    ```bash
    git init
    git add .
@@ -39,7 +39,7 @@ Source: the assignment brief (V2 docx, 14 Nov; the rubric is taken from V1 PDF p
    git remote add origin https://github.com/<user>/<repo>.git
    git push -u origin main
    ```
-3. [ ] Check online that `private/` is **not** in the repository. It holds gated dataset text.
+3. [x] Check online that `private/` is **not** in the repository. It holds gated dataset text. (Checked 2026-11-15: absent.)
 4. [ ] Put the repository link in the report (Methodology section) and in README.md if wanted.
 5. [ ] Optional: choose a licence for your own code (e.g. MIT). MiniCheck itself is Apache-2.0 and is installed from its repository, not copied.
 

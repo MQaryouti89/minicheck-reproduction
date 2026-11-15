@@ -352,7 +352,7 @@ Re-running the same command resumes. Finished datasets are skipped, and a partly
 
 `run_checker.py` calls MiniCheck's own per-example function (`Inferencer.inference_per_example`, which `MiniCheck.score()` loops over), so each claim can be timed. At start-up it checks that this gives the same probabilities as `score()` on three claims.
 
-**Analysis (CPU only, from the saved predictions; no GPU and no gated data needed):**
+**Analysis (CPU only, from the saved predictions; no GPU and no gated data needed; Python 3.13, since the pinned numpy 2.5.4 does not install on 3.11):**
 
 ```bash
 pip install -r requirements-analysis.txt   # numpy, pandas, scikit-learn, matplotlib, pytest (pinned)
